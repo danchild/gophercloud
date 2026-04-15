@@ -88,7 +88,7 @@ type UpdateOpts struct {
 
 	// Force will update the quotaset even if the quota has already been used
 	// and the reserved quota exceeds the new quota.
-	Force bool `json:"force,omitempty"`
+	Force *bool `json:"force,omitempty"`
 }
 
 // UpdateOptsBuilder enables extensins to add parameters to the update request.

@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/gophercloud/gophercloud/v2/internal/ptr"
 	"github.com/gophercloud/gophercloud/v2/openstack/compute/v2/services"
 	"github.com/gophercloud/gophercloud/v2/pagination"
 	th "github.com/gophercloud/gophercloud/v2/testhelper"
@@ -84,7 +85,7 @@ func TestUpdateService(t *testing.T) {
 	HandleUpdateSuccessfully(t, fakeServer)
 
 	client := client.ServiceClient(fakeServer)
-	actual, err := services.Update(context.TODO(), client, "fake-service-id", services.UpdateOpts{Status: services.ServiceDisabled}).Extract()
+	actual, err := services.Update(context.TODO(), client, "fake-service-id", services.UpdateOpts{Status: ptr.To(services.ServiceDisabled)}).Extract()
 	if err != nil {
 		t.Fatalf("Unexpected Update error: %v", err)
 	}

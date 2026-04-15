@@ -60,10 +60,10 @@ type UpdateOptsBuilder interface {
 // UpdateOpts specifies the base attributes that may be updated on a service.
 type UpdateOpts struct {
 	// Status represents the new service status. One of enabled or disabled.
-	Status ServiceStatus `json:"status,omitempty"`
+	Status *ServiceStatus `json:"status,omitempty"`
 
 	// DisabledReason represents the reason for disabling a service.
-	DisabledReason string `json:"disabled_reason,omitempty"`
+	DisabledReason *string `json:"disabled_reason,omitempty"`
 
 	// ForcedDown is a manual override to tell nova that the service in question
 	// has been fenced manually by the operations team.

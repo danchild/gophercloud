@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/gophercloud/gophercloud/v2"
+	"github.com/gophercloud/gophercloud/v2/internal/ptr"
 	"github.com/gophercloud/gophercloud/v2/openstack/compute/v2/quotasets"
 	th "github.com/gophercloud/gophercloud/v2/testhelper"
 	"github.com/gophercloud/gophercloud/v2/testhelper/client"
@@ -42,7 +43,7 @@ func TestPartialUpdate(t *testing.T) {
 	fakeServer := th.SetupHTTP()
 	defer fakeServer.Teardown()
 	HandlePartialPutSuccessfully(t, fakeServer)
-	opts := quotasets.UpdateOpts{Cores: gophercloud.IntToPointer(200), Force: true}
+	opts := quotasets.UpdateOpts{Cores: gophercloud.IntToPointer(200), Force: ptr.To(true)}
 	actual, err := quotasets.Update(context.TODO(), client.ServiceClient(fakeServer), FirstTenantID, opts).Extract()
 	th.AssertNoErr(t, err)
 	th.CheckDeepEquals(t, &FirstQuotaSet, actual)
