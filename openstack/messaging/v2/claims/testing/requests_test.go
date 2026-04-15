@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/gophercloud/gophercloud/v2/internal/ptr"
 	"github.com/gophercloud/gophercloud/v2/openstack/messaging/v2/claims"
 	th "github.com/gophercloud/gophercloud/v2/testhelper"
 	"github.com/gophercloud/gophercloud/v2/testhelper/client"
@@ -58,8 +59,8 @@ func TestUpdate(t *testing.T) {
 	HandleUpdateSuccessfully(t, fakeServer)
 
 	updateOpts := claims.UpdateOpts{
-		Grace: 1600,
-		TTL:   1200,
+		Grace: ptr.To(1600),
+		TTL:   ptr.To(1200),
 	}
 
 	err := claims.Update(context.TODO(), client.ServiceClient(fakeServer), QueueName, ClaimID, updateOpts).ExtractErr()

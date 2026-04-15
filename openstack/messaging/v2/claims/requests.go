@@ -77,20 +77,16 @@ type UpdateOptsBuilder interface {
 // UpdateOpts implements UpdateOpts.
 type UpdateOpts struct {
 	// Update the TTL for the specified Claim.
-	TTL int `json:"ttl,omitempty"`
+	TTL *int `json:"ttl,omitempty"`
 
 	// Update the grace period for Messages in a specified Claim.
-	Grace int `json:"grace,omitempty"`
+	Grace *int `json:"grace,omitempty"`
 }
 
 // ToClaimUpdateMap assembles a request body based on the contents of
 // UpdateOpts.
 func (opts UpdateOpts) ToClaimUpdateMap() (map[string]any, error) {
-	b, err := gophercloud.BuildRequestBody(opts, "")
-	if err != nil {
-		return nil, err
-	}
-	return b, nil
+	return gophercloud.BuildRequestBody(opts, "")
 }
 
 // Update will update the options for a specified claim.
