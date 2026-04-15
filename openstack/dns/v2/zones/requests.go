@@ -129,13 +129,13 @@ type UpdateOptsBuilder interface {
 // UpdateOpts specifies the attributes to update a zone.
 type UpdateOpts struct {
 	// Email contact of the zone.
-	Email string `json:"email,omitempty"`
+	Email *string `json:"email,omitempty"`
 
 	// TTL is the time to live of the zone.
 	TTL int `json:"-"`
 
 	// Masters specifies zone masters if this is a secondary zone.
-	Masters []string `json:"masters,omitempty"`
+	Masters *[]string `json:"masters,omitempty"`
 
 	// Description of the zone.
 	Description *string `json:"description,omitempty"`

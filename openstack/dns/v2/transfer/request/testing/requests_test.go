@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/gophercloud/gophercloud/v2/internal/ptr"
 	transferRequests "github.com/gophercloud/gophercloud/v2/openstack/dns/v2/transfer/request"
 	"github.com/gophercloud/gophercloud/v2/pagination"
 	th "github.com/gophercloud/gophercloud/v2/testhelper"
@@ -89,9 +90,8 @@ func TestUpdate(t *testing.T) {
 	defer fakeServer.Teardown()
 	HandleUpdateSuccessfully(t, fakeServer)
 
-	var description = "Updated Description"
 	updateOpts := transferRequests.UpdateOpts{
-		Description: description,
+		Description: ptr.To("Updated Description"),
 	}
 
 	UpdatedTransferRequest := CreatedTransferRequest

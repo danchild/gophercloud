@@ -144,7 +144,7 @@ type UpdateOpts struct {
 	TTL *int `json:"ttl,omitempty"`
 
 	// Records are the DNS records of the RecordSet.
-	Records []string `json:"records,omitempty"`
+	Records *[]string `json:"records,omitempty"`
 }
 
 // ToRecordSetUpdateMap formats an UpdateOpts structure into a request body.

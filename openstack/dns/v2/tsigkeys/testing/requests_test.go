@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/gophercloud/gophercloud/v2/internal/ptr"
 	"github.com/gophercloud/gophercloud/v2/openstack/dns/v2/tsigkeys"
 	"github.com/gophercloud/gophercloud/v2/pagination"
 	th "github.com/gophercloud/gophercloud/v2/testhelper"
@@ -74,8 +75,8 @@ func TestUpdate(t *testing.T) {
 	HandleUpdateSuccessfully(t, fakeServer)
 
 	updateOpts := tsigkeys.UpdateOpts{
-		Name:   "updatedsecondarykey",
-		Secret: "new-base64-secret-example==",
+		Name:   ptr.To("updatedsecondarykey"),
+		Secret: ptr.To("new-base64-secret-example=="),
 	}
 
 	UpdatedTSIGKey := CreatedTSIGKey

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"testing"
 
+	"github.com/gophercloud/gophercloud/v2/internal/ptr"
 	"github.com/gophercloud/gophercloud/v2/openstack/dns/v2/recordsets"
 	"github.com/gophercloud/gophercloud/v2/pagination"
 	th "github.com/gophercloud/gophercloud/v2/testhelper"
@@ -162,12 +163,10 @@ func TestUpdate(t *testing.T) {
 	defer fakeServer.Teardown()
 	HandleUpdateSuccessfully(t, fakeServer)
 
-	var description = "Updated description"
-	ttl := 0
 	updateOpts := recordsets.UpdateOpts{
-		TTL:         &ttl,
-		Description: &description,
-		Records:     []string{"10.1.0.2", "10.1.0.3"},
+		TTL:         ptr.To(0),
+		Description: ptr.To("Updated description"),
+		Records:     &[]string{"10.1.0.2", "10.1.0.3"},
 	}
 
 	UpdatedRecordSet := CreatedRecordSet

@@ -98,19 +98,15 @@ type UpdateOptsBuilder interface {
 type UpdateOpts struct {
 	// TargetProjectID is ID that the request will be limited to. No other project
 	// will be allowed to accept this request.
-	TargetProjectID string `json:"target_project_id,omitempty"`
+	TargetProjectID *string `json:"target_project_id,omitempty"`
 
 	// Description of the transfer request.
-	Description string `json:"description,omitempty"`
+	Description *string `json:"description,omitempty"`
 }
 
 // ToTransferRequestUpdateMap formats an UpdateOpts structure into a request body.
 func (opts UpdateOpts) ToTransferRequestUpdateMap() (map[string]any, error) {
-	b, err := gophercloud.BuildRequestBody(opts, "")
-	if err != nil {
-		return nil, err
-	}
-	return b, nil
+	return gophercloud.BuildRequestBody(opts, "")
 }
 
 // Update implements a transfer request update request.

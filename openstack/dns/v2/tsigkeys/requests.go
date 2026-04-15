@@ -114,19 +114,19 @@ type UpdateOptsBuilder interface {
 // UpdateOpts specifies the attributes to update a TSIG key.
 type UpdateOpts struct {
 	// Name of the TSIG key.
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 
 	// Algorithm is the TSIG algorithm.
-	Algorithm string `json:"algorithm,omitempty"`
+	Algorithm *string `json:"algorithm,omitempty"`
 
 	// Secret is the base64-encoded secret key.
-	Secret string `json:"secret,omitempty"`
+	Secret *string `json:"secret,omitempty"`
 
 	// Scope defines the scope of the TSIG key.
-	Scope string `json:"scope,omitempty"`
+	Scope *string `json:"scope,omitempty"`
 
 	// ResourceID is the ID of the resource this key is associated with.
-	ResourceID string `json:"resource_id,omitempty"`
+	ResourceID *string `json:"resource_id,omitempty"`
 }
 
 // ToTSIGKeyUpdateMap formats an UpdateOpts structure into a request body.
