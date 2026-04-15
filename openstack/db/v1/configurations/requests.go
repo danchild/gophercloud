@@ -24,9 +24,9 @@ type CreateOptsBuilder interface {
 // how configuration resources are associated with datastores.
 type DatastoreOpts struct {
 	// The type of datastore. Defaults to "MySQL".
-	Type string `json:"type,omitempty"`
+	Type *string `json:"type,omitempty"`
 	// The specific version of a datastore. Defaults to "5.6".
-	Version string `json:"version,omitempty"`
+	Version *string `json:"version,omitempty"`
 }
 
 // CreateOpts is the struct responsible for configuring new configurations.
@@ -76,11 +76,11 @@ type UpdateOptsBuilder interface {
 // UpdateOpts is the struct responsible for modifying existing configurations.
 type UpdateOpts struct {
 	// The configuration group name
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 	// A map of user-defined configuration settings that will define
 	// how each associated datastore works. Each key/value pair is specific to a
 	// datastore type.
-	Values map[string]any `json:"values,omitempty"`
+	Values *map[string]any `json:"values,omitempty"`
 	// Associates the configuration group with a particular datastore.
 	Datastore *DatastoreOpts `json:"datastore,omitempty"`
 	// A human-readable explanation for the group.

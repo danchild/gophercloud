@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/gophercloud/gophercloud/v2/internal/ptr"
 	"github.com/gophercloud/gophercloud/v2/openstack/db/v1/configurations"
 	"github.com/gophercloud/gophercloud/v2/openstack/db/v1/instances"
 	"github.com/gophercloud/gophercloud/v2/pagination"
@@ -64,8 +65,8 @@ func TestCreate(t *testing.T) {
 
 	opts := configurations.CreateOpts{
 		Datastore: &configurations.DatastoreOpts{
-			Type:    "a00000a0-00a0-0a00-00a0-000a000000aa",
-			Version: "b00000b0-00b0-0b00-00b0-000b000000bb",
+			Type:    ptr.To("a00000a0-00a0-0a00-00a0-000a000000aa"),
+			Version: ptr.To("b00000b0-00b0-0b00-00b0-000b000000bb"),
 		},
 		Description: "example description",
 		Name:        "example-configuration-name",
@@ -86,9 +87,9 @@ func TestUpdate(t *testing.T) {
 	fixture.SetupHandler(t, fakeServer, resURL, "PATCH", UpdateReq, "", 200)
 
 	opts := configurations.UpdateOpts{
-		Values: map[string]any{
+		Values: ptr.To(map[string]any{
 			"connect_timeout": 300,
-		},
+		}),
 	}
 
 	err := configurations.Update(context.TODO(), client.ServiceClient(fakeServer), configID, opts).ExtractErr()
@@ -101,9 +102,9 @@ func TestReplace(t *testing.T) {
 	fixture.SetupHandler(t, fakeServer, resURL, "PUT", UpdateReq, "", 202)
 
 	opts := configurations.UpdateOpts{
-		Values: map[string]any{
+		Values: ptr.To(map[string]any{
 			"connect_timeout": 300,
-		},
+		}),
 	}
 
 	err := configurations.Replace(context.TODO(), client.ServiceClient(fakeServer), configID, opts).ExtractErr()
