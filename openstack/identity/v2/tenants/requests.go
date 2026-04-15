@@ -98,7 +98,7 @@ type UpdateOptsBuilder interface {
 // tenant.
 type UpdateOpts struct {
 	// Name is the name of the tenant.
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 
 	// Description is the description of the tenant.
 	Description *string `json:"description,omitempty"`

@@ -114,7 +114,7 @@ type UpdateOptsBuilder interface {
 // UpdateOpts represents parameters to update a domain.
 type UpdateOpts struct {
 	// Name is the name of the domain.
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 
 	// Description is the description of the domain.
 	Description *string `json:"description,omitempty"`

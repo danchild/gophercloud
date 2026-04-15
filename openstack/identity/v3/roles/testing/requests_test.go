@@ -136,7 +136,7 @@ func TestUpdateRole(t *testing.T) {
 		Extra: map[string]any{
 			"description": "admin read-only support role",
 		},
-		Options: map[roles.Option]any{
+		Options: &map[roles.Option]any{
 			roles.Immutable: false,
 		},
 	}

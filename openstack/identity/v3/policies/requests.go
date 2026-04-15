@@ -140,7 +140,7 @@ type UpdateOptsBuilder interface {
 // UpdateOpts provides options for updating a policy.
 type UpdateOpts struct {
 	// Type is the MIME media type of the serialized policy blob.
-	Type string `json:"type,omitempty"`
+	Type *string `json:"type,omitempty"`
 
 	// Blob is the policy rule as a serialized blob.
 	Blob []byte `json:"-"`
@@ -151,7 +151,7 @@ type UpdateOpts struct {
 
 // ToPolicyUpdateMap formats a UpdateOpts into an update request.
 func (opts UpdateOpts) ToPolicyUpdateMap() (map[string]any, error) {
-	if len(opts.Type) > policyTypeMaxLength {
+	if opts.Type != nil && len(*opts.Type) > policyTypeMaxLength {
 		return nil, StringFieldLengthExceedsLimit{
 			Field: "type",
 			Limit: policyTypeMaxLength,

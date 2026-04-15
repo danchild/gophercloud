@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/gophercloud/gophercloud/v2/internal/ptr"
 	"github.com/gophercloud/gophercloud/v2/openstack/identity/v3/services"
 	"github.com/gophercloud/gophercloud/v2/pagination"
 	th "github.com/gophercloud/gophercloud/v2/testhelper"
@@ -81,10 +82,9 @@ func TestUpdateSuccessful(t *testing.T) {
 	defer fakeServer.Teardown()
 	HandleUpdateServiceSuccessfully(t, fakeServer)
 
-	updatedDescription := "Service Two Updated"
 	updateOpts := services.UpdateOpts{
-		Description: &updatedDescription,
-		Type:        "compute2",
+		Description: ptr.To("Service Two Updated"),
+		Type:        ptr.To("compute2"),
 	}
 	actual, err := services.Update(context.TODO(), client.ServiceClient(fakeServer), "9876", updateOpts).Extract()
 	th.AssertNoErr(t, err)

@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/gophercloud/gophercloud/v2"
+	"github.com/gophercloud/gophercloud/v2/internal/ptr"
 	"github.com/gophercloud/gophercloud/v2/openstack/identity/v2/tenants"
 	"github.com/gophercloud/gophercloud/v2/pagination"
 	th "github.com/gophercloud/gophercloud/v2/testhelper"
@@ -74,10 +75,9 @@ func TestUpdateTenant(t *testing.T) {
 	mockUpdateTenantResponse(t, fakeServer)
 
 	id := "5c62ef576dc7444cbb73b1fe84b97648"
-	description := "This is new name"
 	opts := tenants.UpdateOpts{
-		Name:        "new_name",
-		Description: &description,
+		Name:        ptr.To("new_name"),
+		Description: ptr.To("This is new name"),
 		Enabled:     gophercloud.Enabled,
 	}
 

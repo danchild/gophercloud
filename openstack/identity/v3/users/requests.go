@@ -19,9 +19,25 @@ const (
 	IgnoreChangePasswordUponFirstUse Option = "ignore_change_password_upon_first_use"
 	IgnorePasswordExpiry             Option = "ignore_password_expiry"
 	IgnoreLockoutFailureAttempts     Option = "ignore_lockout_failure_attempts"
+	LockPassword                     Option = "lock_password"
 	MultiFactorAuthRules             Option = "multi_factor_auth_rules"
 	MultiFactorAuthEnabled           Option = "multi_factor_auth_enabled"
+	IgnoreUserInactivity             Option = "ignore_user_inactivity"
 )
+
+// ClearAllOptions returns a map with all known user options set to nil,
+// which will unset all options when used in an UpdateOpts.
+func clearAllOptions() map[string]any {
+	return map[string]any{
+		string(IgnoreChangePasswordUponFirstUse): nil,
+		string(IgnorePasswordExpiry):             nil,
+		string(IgnoreLockoutFailureAttempts):     nil,
+		string(LockPassword):                     nil,
+		string(MultiFactorAuthRules):             nil,
+		string(MultiFactorAuthEnabled):           nil,
+		string(IgnoreUserInactivity):             nil,
+	}
+}
 
 // ListOptsBuilder allows extensions to add additional parameters to
 // the List request
@@ -174,16 +190,17 @@ type UpdateOptsBuilder interface {
 // UpdateOpts provides options for updating a user account.
 type UpdateOpts struct {
 	// Name is the name of the new user.
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 
 	// DefaultProjectID is the ID of the default project of the user.
-	DefaultProjectID string `json:"default_project_id,omitempty"`
+	// OS API allows setting empty string
+	DefaultProjectID *string `json:"default_project_id,omitempty"`
 
 	// Description is a description of the user.
 	Description *string `json:"description,omitempty"`
 
 	// DomainID is the ID of the domain the user belongs to.
-	DomainID string `json:"domain_id,omitempty"`
+	DomainID *string `json:"domain_id,omitempty"`
 
 	// Enabled sets the user status to enabled or disabled.
 	Enabled *bool `json:"enabled,omitempty"`
@@ -192,10 +209,10 @@ type UpdateOpts struct {
 	Extra map[string]any `json:"-"`
 
 	// Options are defined options in the API to enable certain features.
-	Options map[Option]any `json:"options,omitempty"`
+	Options *map[Option]any `json:"options,omitempty"`
 
 	// Password is the password of the new user.
-	Password string `json:"password,omitempty"`
+	Password *string `json:"password,omitempty"`
 }
 
 // ToUserUpdateMap formats a UpdateOpts into an update request.
@@ -205,10 +222,20 @@ func (opts UpdateOpts) ToUserUpdateMap() (map[string]any, error) {
 		return nil, err
 	}
 
-	if opts.Extra != nil {
-		if v, ok := b["user"].(map[string]any); ok {
+	if u, ok := b["user"].(map[string]any); ok {
+		// Convert empty string to nil; null is the default, not ""
+		if v, ok := u["default_project_id"].(string); ok && v == "" {
+			u["default_project_id"] = nil
+		}
+
+		if v, ok := u["options"].(map[string]any); ok && len(v) == 0 {
+			u["options"] = clearAllOptions()
+		}
+
+		// Handle Extra map
+		if opts.Extra != nil {
 			for key, value := range opts.Extra {
-				v[key] = value
+				u[key] = value
 			}
 		}
 	}

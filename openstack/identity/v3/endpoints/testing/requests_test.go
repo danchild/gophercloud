@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/gophercloud/gophercloud/v2"
+	"github.com/gophercloud/gophercloud/v2/internal/ptr"
 	"github.com/gophercloud/gophercloud/v2/openstack/identity/v3/endpoints"
 	"github.com/gophercloud/gophercloud/v2/pagination"
 	th "github.com/gophercloud/gophercloud/v2/testhelper"
@@ -231,13 +232,11 @@ func TestUpdateEndpoint(t *testing.T) {
 		}`)
 	})
 
-	enabled := false
-	description := "Changed description"
 	actual, err := endpoints.Update(context.TODO(), client.ServiceClient(fakeServer), "12", endpoints.UpdateOpts{
-		Name:        "renamed",
-		Region:      "somewhere-else",
-		Description: &description,
-		Enabled:     &enabled,
+		Name:        ptr.To("renamed"),
+		Region:      ptr.To("somewhere-else"),
+		Description: ptr.To("Changed description"),
+		Enabled:     ptr.To(false),
 	}).Extract()
 	if err != nil {
 		t.Fatalf("Unexpected error from Update: %v", err)

@@ -187,7 +187,7 @@ type UpdateOptsBuilder interface {
 // UpdateOpts represents parameters to update a project.
 type UpdateOpts struct {
 	// DomainID is the ID this project will belong under.
-	DomainID string `json:"domain_id,omitempty"`
+	DomainID *string `json:"domain_id,omitempty"`
 
 	// Enabled sets the project status to enabled or disabled.
 	Enabled *bool `json:"enabled,omitempty"`
@@ -196,10 +196,10 @@ type UpdateOpts struct {
 	IsDomain *bool `json:"is_domain,omitempty"`
 
 	// Name is the name of the project.
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 
 	// ParentID specifies the parent project of this new project.
-	ParentID string `json:"parent_id,omitempty"`
+	ParentID *string `json:"parent_id,omitempty"`
 
 	// Description is the description of the project.
 	Description *string `json:"description,omitempty"`
@@ -211,7 +211,7 @@ type UpdateOpts struct {
 	Extra map[string]any `json:"-"`
 
 	// Options are defined options in the API to enable certain features.
-	Options map[Option]any `json:"options,omitempty"`
+	Options *map[Option]any `json:"options,omitempty"`
 }
 
 // ToUpdateCreateMap formats a UpdateOpts into an update request.

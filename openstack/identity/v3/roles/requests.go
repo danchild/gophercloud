@@ -145,7 +145,7 @@ type UpdateOptsBuilder interface {
 // UpdateOpts provides options for updating a role.
 type UpdateOpts struct {
 	// Name is an updated name for the role.
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 
 	// Description is an updated description for the role.
 	Description *string `json:"description,omitempty"`
@@ -154,7 +154,7 @@ type UpdateOpts struct {
 	Extra map[string]any `json:"-"`
 
 	// Options are defined options in the API to enable certain features.
-	Options map[Option]any `json:"options,omitempty"`
+	Options *map[Option]any `json:"options,omitempty"`
 }
 
 // ToRoleUpdateMap formats a UpdateOpts into an update request.

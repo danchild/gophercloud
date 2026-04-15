@@ -102,13 +102,13 @@ type UpdateOptsBuilder interface {
 // UpdateOpts represents parameters to update a credential.
 type UpdateOpts struct {
 	// Serialized blob containing the credentials.
-	Blob string `json:"blob,omitempty"`
+	Blob *string `json:"blob,omitempty"`
 	// ID of the project.
-	ProjectID string `json:"project_id,omitempty"`
+	ProjectID *string `json:"project_id,omitempty"`
 	// The type of the credential.
-	Type string `json:"type,omitempty"`
+	Type *string `json:"type,omitempty"`
 	// ID of the user who owns the credential.
-	UserID string `json:"user_id,omitempty"`
+	UserID *string `json:"user_id,omitempty"`
 }
 
 // ToUpdateCreateMap formats a UpdateOpts into an update request.

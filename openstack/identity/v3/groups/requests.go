@@ -133,13 +133,13 @@ type UpdateOptsBuilder interface {
 // UpdateOpts provides options for updating a group.
 type UpdateOpts struct {
 	// Name is the name of the new group.
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 
 	// Description is a description of the group.
 	Description *string `json:"description,omitempty"`
 
 	// DomainID is the ID of the domain the group belongs to.
-	DomainID string `json:"domain_id,omitempty"`
+	DomainID *string `json:"domain_id,omitempty"`
 
 	// Extra is free-form extra key/value pairs to describe the group.
 	Extra map[string]any `json:"-"`

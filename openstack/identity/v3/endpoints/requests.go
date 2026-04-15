@@ -114,10 +114,10 @@ type UpdateOptsBuilder interface {
 type UpdateOpts struct {
 	// Availability is the interface type of the Endpoint (admin, internal,
 	// or public), referenced by the gophercloud.Availability type.
-	Availability gophercloud.Availability `json:"interface,omitempty"`
+	Availability *gophercloud.Availability `json:"interface,omitempty"`
 
 	// Name is the name of the Endpoint.
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 
 	// Enabled indicates whether the Endpoint appears in the service
 	// or not.
@@ -125,13 +125,13 @@ type UpdateOpts struct {
 
 	// Region is the region the Endpoint is located in.
 	// This field can be omitted or left as a blank string.
-	Region string `json:"region,omitempty"`
+	Region *string `json:"region,omitempty"`
 
 	// URL is the url of the Endpoint.
-	URL string `json:"url,omitempty"`
+	URL *string `json:"url,omitempty"`
 
 	// ServiceID is the ID of the service the Endpoint refers to.
-	ServiceID string `json:"service_id,omitempty"`
+	ServiceID *string `json:"service_id,omitempty"`
 
 	// Description is an updated description of the endpoint.
 	Description *string `json:"description,omitempty"`

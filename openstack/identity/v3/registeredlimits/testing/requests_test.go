@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/gophercloud/gophercloud/v2/internal/ptr"
 	"github.com/gophercloud/gophercloud/v2/openstack/identity/v3/registeredlimits"
 	"github.com/gophercloud/gophercloud/v2/pagination"
 	th "github.com/gophercloud/gophercloud/v2/testhelper"
@@ -94,8 +95,8 @@ func TestUpdateRegisteredLimit(t *testing.T) {
 
 	defaultLimit := 15
 	updateOpts := registeredlimits.UpdateOpts{
-		ServiceID:    "9408080f1970482aa0e38bc2d4ea34b7",
-		ResourceName: "volumes",
+		ServiceID:    ptr.To("9408080f1970482aa0e38bc2d4ea34b7"),
+		ResourceName: ptr.To("volumes"),
 		DefaultLimit: &defaultLimit,
 	}
 

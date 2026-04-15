@@ -121,7 +121,7 @@ type UpdateOpts struct {
 	Description *string `json:"description,omitempty"`
 
 	// Type is the type of the service.
-	Type string `json:"type,omitempty"`
+	Type *string `json:"type,omitempty"`
 
 	// Enabled is whether or not the service is enabled.
 	Enabled *bool `json:"enabled,omitempty"`

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/gophercloud/gophercloud/v2/internal/ptr"
 	"github.com/gophercloud/gophercloud/v2/openstack/identity/v3/policies"
 	"github.com/gophercloud/gophercloud/v2/pagination"
 	th "github.com/gophercloud/gophercloud/v2/testhelper"
@@ -200,8 +201,8 @@ func TestUpdatePolicyTypeLengthCheck(t *testing.T) {
 
 	var updateOpts policies.UpdateOpts
 	for _, _test := range tests {
-		updateOpts.Type = strGenerator(_test.length)
-		if len(updateOpts.Type) != _test.length {
+		updateOpts.Type = ptr.To(strGenerator(_test.length))
+		if len(*updateOpts.Type) != _test.length {
 			t.Fatal("function strGenerator does not work properly")
 		}
 

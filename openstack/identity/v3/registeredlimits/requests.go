@@ -125,13 +125,13 @@ type UpdateOpts struct {
 	DefaultLimit *int `json:"default_limit,omitempty"`
 
 	// RegionID is the ID of the region where the limit is applied.
-	RegionID string `json:"region_id,omitempty"`
+	RegionID *string `json:"region_id,omitempty"`
 
 	// ServiceID is the ID of the service where the limit is applied.
-	ServiceID string `json:"service_id,omitempty"`
+	ServiceID *string `json:"service_id,omitempty"`
 
 	// ResourceName is the name of the resource that the limit is applied to.
-	ResourceName string `json:"resource_name,omitempty"`
+	ResourceName *string `json:"resource_name,omitempty"`
 	//Either service_id, resource_name, or region_id must be different than existing value otherwise it will raise 409.
 }
 

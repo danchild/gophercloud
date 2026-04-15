@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/gophercloud/gophercloud/v2/internal/ptr"
 	"github.com/gophercloud/gophercloud/v2/openstack/identity/v3/groups"
 	"github.com/gophercloud/gophercloud/v2/openstack/identity/v3/projects"
 	"github.com/gophercloud/gophercloud/v2/openstack/identity/v3/users"
@@ -145,10 +146,9 @@ func TestUpdateUser(t *testing.T) {
 	defer fakeServer.Teardown()
 	HandleUpdateUserSuccessfully(t, fakeServer)
 
-	iFalse := false
 	updateOpts := users.UpdateOpts{
-		Enabled: &iFalse,
-		Options: map[users.Option]any{
+		Enabled: ptr.To(false),
+		Options: &map[users.Option]any{
 			users.MultiFactorAuthRules: nil,
 		},
 		Extra: map[string]any{
@@ -246,4 +246,56 @@ func TestListInGroup(t *testing.T) {
 	actual, err := users.ExtractUsers(allPages)
 	th.AssertNoErr(t, err)
 	th.CheckDeepEquals(t, ExpectedUsersSlice, actual)
+}
+
+func TestOptionsUncleared(t *testing.T) {
+
+	options := map[users.Option]any{
+		users.IgnoreChangePasswordUponFirstUse: true,
+	}
+
+	// Create update options
+	updateOpts := users.UpdateOpts{
+		Options: &options,
+	}
+
+	// Create options map
+	updateMap, err := updateOpts.ToUserUpdateMap()
+
+	th.AssertNoErr(t, err)
+
+	// Test that options is unchanged
+	userMap := updateMap["user"].(map[string]any)
+	th.AssertDeepEquals(t, map[string]any{
+		"ignore_change_password_upon_first_use": true,
+	}, userMap["options"])
+}
+
+func TestOptionsCleared(t *testing.T) {
+
+	options := map[users.Option]any{
+		// users.IgnoreChangePasswordUponFirstUse: true,
+	}
+
+	// Create update options
+	updateOpts := users.UpdateOpts{
+		Options: &options,
+	}
+
+	// Create options map
+	updateMap, err := updateOpts.ToUserUpdateMap()
+
+	th.AssertNoErr(t, err)
+
+	// Test that options changed; nulling all possible keys
+	userMap := updateMap["user"].(map[string]any)
+	th.AssertDeepEquals(t, map[string]any{
+		"ignore_change_password_upon_first_use": nil,
+		"ignore_password_expiry":                nil,
+		"ignore_lockout_failure_attempts":       nil,
+		"lock_password":                         nil,
+		"multi_factor_auth_rules":               nil,
+		"multi_factor_auth_enabled":             nil,
+		"ignore_user_inactivity":                nil,
+	}, userMap["options"])
 }

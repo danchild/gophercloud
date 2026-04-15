@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/gophercloud/gophercloud/v2/internal/ptr"
 	"github.com/gophercloud/gophercloud/v2/openstack/identity/v3/groups"
 	"github.com/gophercloud/gophercloud/v2/pagination"
 	th "github.com/gophercloud/gophercloud/v2/testhelper"
@@ -112,9 +113,8 @@ func TestUpdateGroup(t *testing.T) {
 	defer fakeServer.Teardown()
 	HandleUpdateGroupSuccessfully(t, fakeServer)
 
-	var description = "L2 Support Team"
 	updateOpts := groups.UpdateOpts{
-		Description: &description,
+		Description: ptr.To("L2 Support Team"),
 		Extra: map[string]any{
 			"email": "supportteam@example.com",
 		},
