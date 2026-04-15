@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/gophercloud/gophercloud/v2/internal/ptr"
 	"github.com/gophercloud/gophercloud/v2/openstack/image/v2/members"
 	"github.com/gophercloud/gophercloud/v2/pagination"
 	th "github.com/gophercloud/gophercloud/v2/testhelper"
@@ -147,7 +148,7 @@ func TestMemberUpdateSuccessfully(t *testing.T) {
 	im, err := members.Update(context.TODO(), client.ServiceClient(fakeServer), "da3b75d9-3f4a-40e7-8a2c-bfab23927dea",
 		"8989447062e04a818baf9e073fd04fa7",
 		members.UpdateOpts{
-			Status: "accepted",
+			Status: ptr.To("accepted"),
 		}).Extract()
 	th.AssertEquals(t, 1, counter.Counter)
 	th.AssertNoErr(t, err)

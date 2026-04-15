@@ -63,7 +63,7 @@ type UpdateOptsBuilder interface {
 
 // UpdateOpts represents options to an Update request.
 type UpdateOpts struct {
-	Status string
+	Status *string
 }
 
 // ToMemberUpdateMap formats an UpdateOpts structure into a request body.
