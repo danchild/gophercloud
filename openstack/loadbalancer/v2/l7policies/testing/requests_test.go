@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/gophercloud/gophercloud/v2/internal/ptr"
 	"github.com/gophercloud/gophercloud/v2/openstack/loadbalancer/v2/l7policies"
 	fake "github.com/gophercloud/gophercloud/v2/openstack/networking/v2/common"
 	"github.com/gophercloud/gophercloud/v2/pagination"
@@ -118,13 +119,11 @@ func TestUpdateL7Policy(t *testing.T) {
 	HandleL7PolicyUpdateSuccessfully(t, fakeServer)
 
 	client := fake.ServiceClient(fakeServer)
-	newName := "NewL7PolicyName"
-	redirectURL := "http://www.new-example.com"
 	actual, err := l7policies.Update(context.TODO(), client, "8a1412f0-4c32-4257-8b07-af4770b604fd",
 		l7policies.UpdateOpts{
-			Name:        &newName,
-			Action:      l7policies.ActionRedirectToURL,
-			RedirectURL: &redirectURL,
+			Name:        ptr.To("NewL7PolicyName"),
+			Action:      ptr.To(l7policies.ActionRedirectToURL),
+			RedirectURL: ptr.To("http://www.new-example.com"),
 		}).Extract()
 	if err != nil {
 		t.Fatalf("Unexpected Update error: %v", err)
@@ -157,8 +156,9 @@ func TestUpdateL7PolicyWithInvalidOpts(t *testing.T) {
 	fakeServer := th.SetupHTTP()
 	defer fakeServer.Teardown()
 
+	invalidAction := l7policies.Action("invalid")
 	res := l7policies.Update(context.TODO(), fake.ServiceClient(fakeServer), "8a1412f0-4c32-4257-8b07-af4770b604fd", l7policies.UpdateOpts{
-		Action: l7policies.Action("invalid"),
+		Action: &invalidAction,
 	})
 	if res.Err == nil {
 		t.Fatalf("Expected error, got none")

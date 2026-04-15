@@ -34,7 +34,7 @@ type SessionPersistence struct {
 	Type string `json:"type"`
 
 	// Name of cookie if persistence mode is set appropriately.
-	CookieName string `json:"cookie_name,omitempty"`
+	CookieName *string `json:"cookie_name,omitempty"`
 }
 
 // LoadBalancerID represents a load balancer.

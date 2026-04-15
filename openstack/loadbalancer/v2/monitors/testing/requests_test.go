@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/gophercloud/gophercloud/v2/internal/ptr"
 	"github.com/gophercloud/gophercloud/v2/openstack/loadbalancer/v2/monitors"
 	fake "github.com/gophercloud/gophercloud/v2/openstack/loadbalancer/v2/testhelper"
 	"github.com/gophercloud/gophercloud/v2/pagination"
@@ -121,15 +122,14 @@ func TestUpdateHealthmonitor(t *testing.T) {
 	HandleHealthmonitorUpdateSuccessfully(t, fakeServer)
 
 	client := fake.ServiceClient(fakeServer)
-	name := "NewHealthmonitorName"
 	actual, err := monitors.Update(context.TODO(), client, "5d4b5228-33b0-4e60-b225-9b727c1a20e7", monitors.UpdateOpts{
-		Name:           &name,
-		Delay:          3,
-		Timeout:        20,
-		MaxRetries:     10,
-		MaxRetriesDown: 8,
-		URLPath:        "/another_check",
-		ExpectedCodes:  "301",
+		Name:           ptr.To("NewHealthmonitorName"),
+		Delay:          ptr.To(3),
+		Timeout:        ptr.To(20),
+		MaxRetries:     ptr.To(10),
+		MaxRetriesDown: ptr.To(8),
+		URLPath:        ptr.To("/another_check"),
+		ExpectedCodes:  ptr.To("301"),
 	}).Extract()
 	if err != nil {
 		t.Fatalf("Unexpected Update error: %v", err)
@@ -157,8 +157,8 @@ func TestDelayMustBeGreaterOrEqualThanTimeout(t *testing.T) {
 	}
 
 	_, err = monitors.Update(context.TODO(), fake.ServiceClient(fakeServer), "453105b9-1754-413f-aab1-55f1af620750", monitors.UpdateOpts{
-		Delay:   1,
-		Timeout: 10,
+		Delay:   ptr.To(1),
+		Timeout: ptr.To(10),
 	}).Extract()
 
 	if err == nil {

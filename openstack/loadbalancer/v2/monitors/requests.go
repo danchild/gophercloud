@@ -218,27 +218,27 @@ type UpdateOptsBuilder interface {
 // operation.
 type UpdateOpts struct {
 	// The time, in seconds, between sending probes to members.
-	Delay int `json:"delay,omitempty"`
+	Delay *int `json:"delay,omitempty"`
 
 	// Maximum number of seconds for a Monitor to wait for a ping reply
 	// before it times out. The value must be less than the delay value.
-	Timeout int `json:"timeout,omitempty"`
+	Timeout *int `json:"timeout,omitempty"`
 
 	// Number of permissible ping failures before changing the member's
 	// status to INACTIVE. Must be a number between 1 and 10.
-	MaxRetries int `json:"max_retries,omitempty"`
+	MaxRetries *int `json:"max_retries,omitempty"`
 
 	// Number of permissible ping failures befor changing the member's
 	// status to ERROR. Must be a number between 1 and 10.
-	MaxRetriesDown int `json:"max_retries_down,omitempty"`
+	MaxRetriesDown *int `json:"max_retries_down,omitempty"`
 
 	// URI path that will be accessed if Monitor type is HTTP or HTTPS.
 	// Required for HTTP(S) types.
-	URLPath string `json:"url_path,omitempty"`
+	URLPath *string `json:"url_path,omitempty"`
 
 	// The HTTP method used for requests by the Monitor. If this attribute
 	// is not specified, it defaults to "GET". Required for HTTP(S) types.
-	HTTPMethod string `json:"http_method,omitempty"`
+	HTTPMethod *string `json:"http_method,omitempty"`
 
 	// The HTTP version. One of 1.0 or 1.1. The default is 1.0. New in
 	// version 2.10.
@@ -247,7 +247,7 @@ type UpdateOpts struct {
 	// Expected HTTP codes for a passing HTTP(S) Monitor. You can either specify
 	// a single status like "200", or a range like "200-202". Required for HTTP(S)
 	// types.
-	ExpectedCodes string `json:"expected_codes,omitempty"`
+	ExpectedCodes *string `json:"expected_codes,omitempty"`
 
 	// The Name of the Monitor.
 	Name *string `json:"name,omitempty"`
@@ -261,7 +261,7 @@ type UpdateOpts struct {
 	AdminStateUp *bool `json:"admin_state_up,omitempty"`
 
 	// Tags is a set of resource tags. New in version 2.5
-	Tags []string `json:"tags,omitempty"`
+	Tags *[]string `json:"tags,omitempty"`
 }
 
 // ToMonitorUpdateMap builds a request body from UpdateOpts.

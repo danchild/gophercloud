@@ -229,7 +229,7 @@ type UpdateOpts struct {
 	// The algorithm used to distribute load between the members of the pool. The
 	// current specification supports LBMethodRoundRobin, LBMethodLeastConnections,
 	// LBMethodSourceIp and LBMethodSourceIpPort as valid values for this attribute.
-	LBMethod LBMethod `json:"lb_algorithm,omitempty"`
+	LBMethod *LBMethod `json:"lb_algorithm,omitempty"`
 
 	// The administrative state of the Pool. A valid value is true (UP)
 	// or false (DOWN).

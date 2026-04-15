@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/gophercloud/gophercloud/v2/internal/ptr"
 	"github.com/gophercloud/gophercloud/v2/openstack/loadbalancer/v2/pools"
 	fake "github.com/gophercloud/gophercloud/v2/openstack/loadbalancer/v2/testhelper"
 	"github.com/gophercloud/gophercloud/v2/pagination"
@@ -99,10 +100,9 @@ func TestUpdatePool(t *testing.T) {
 	HandlePoolUpdateSuccessfully(t, fakeServer)
 
 	client := fake.ServiceClient(fakeServer)
-	name := "NewPoolName"
 	actual, err := pools.Update(context.TODO(), client, "c3741b06-df4d-4715-b142-276b6bce75ab", pools.UpdateOpts{
-		Name:     &name,
-		LBMethod: pools.LBMethodLeastConnections,
+		Name:     ptr.To("NewPoolName"),
+		LBMethod: ptr.To(pools.LBMethodLeastConnections),
 	}).Extract()
 	if err != nil {
 		t.Fatalf("Unexpected Update error: %v", err)

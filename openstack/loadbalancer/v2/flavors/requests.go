@@ -117,12 +117,7 @@ type UpdateOpts struct {
 
 // ToFlavorUpdateMap builds a request body from UpdateOpts.
 func (opts UpdateOpts) ToFlavorUpdateMap() (map[string]any, error) {
-	b, err := gophercloud.BuildRequestBody(opts, "flavor")
-	if err != nil {
-		return nil, err
-	}
-
-	return b, nil
+	return gophercloud.BuildRequestBody(opts, "flavor")
 }
 
 // Update is an operation which modifies the attributes of the specified

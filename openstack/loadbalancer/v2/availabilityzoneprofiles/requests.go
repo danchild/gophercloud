@@ -113,12 +113,7 @@ type UpdateOpts struct {
 
 // ToAvailabiltyZoneProfileUpdateMap builds a request body from UpdateOpts.
 func (opts UpdateOpts) ToAvailabiltyZoneProfileUpdateMap() (map[string]any, error) {
-	b, err := gophercloud.BuildRequestBody(opts, "availability_zone_profile")
-	if err != nil {
-		return nil, err
-	}
-
-	return b, nil
+	return gophercloud.BuildRequestBody(opts, "availability_zone_profile")
 }
 
 // Update is an operation which modifies the attributes of the specified

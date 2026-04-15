@@ -188,10 +188,10 @@ type UpdateOpts struct {
 	Name *string `json:"name,omitempty"`
 
 	// The L7 policy action. One of REDIRECT_PREFIX, REDIRECT_TO_POOL, REDIRECT_TO_URL, or REJECT.
-	Action Action `json:"action,omitempty"`
+	Action *Action `json:"action,omitempty"`
 
 	// The position of this policy on the listener.
-	Position int32 `json:"position,omitempty"`
+	Position *int32 `json:"position,omitempty"`
 
 	// A human-readable description for the resource, empty string is allowed.
 	Description *string `json:"description,omitempty"`
@@ -211,7 +211,7 @@ type UpdateOpts struct {
 	// Requests matching this policy will be redirected to the specified URL or Prefix URL
 	// with the HTTP response code. Valid if action is REDIRECT_TO_URL or REDIRECT_PREFIX.
 	// Valid options are: 301, 302, 303, 307, or 308. Default is 302. Requires version 2.9
-	RedirectHttpCode int32 `json:"redirect_http_code,omitempty"`
+	RedirectHttpCode *int32 `json:"redirect_http_code,omitempty"`
 
 	// The administrative state of the Loadbalancer. A valid value is true (UP)
 	// or false (DOWN).
