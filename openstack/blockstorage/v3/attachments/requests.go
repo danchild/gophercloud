@@ -143,7 +143,7 @@ type UpdateOptsBuilder interface {
 // This is used to finalize an attachment that was created without a
 // connector (reserve).
 type UpdateOpts struct {
-	Connector map[string]any `json:"connector"`
+	Connector *map[string]any `json:"connector"`
 }
 
 // ToAttachmentUpdateMap assembles a request body based on the contents of an

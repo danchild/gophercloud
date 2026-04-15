@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/gophercloud/gophercloud/v2/internal/ptr"
 	"github.com/gophercloud/gophercloud/v2/openstack/blockstorage/v3/attachments"
 	th "github.com/gophercloud/gophercloud/v2/testhelper"
 	"github.com/gophercloud/gophercloud/v2/testhelper/client"
@@ -81,7 +82,7 @@ func TestUpdate(t *testing.T) {
 	MockUpdateResponse(t, fakeServer)
 
 	options := &attachments.UpdateOpts{
-		Connector: map[string]any{
+		Connector: ptr.To(map[string]any{
 			"initiator":  "iqn.1993-08.org.debian: 01: cad181614cec",
 			"ip":         "192.168.1.20",
 			"platform":   "x86_64",
@@ -90,7 +91,7 @@ func TestUpdate(t *testing.T) {
 			"multipath":  false,
 			"mountpoint": "/dev/vdb",
 			"mode":       "rw",
-		},
+		}),
 	}
 	attachment, err := attachments.Update(context.TODO(), client.ServiceClient(fakeServer), "05551600-a936-4d4a-ba42-79a037c1-c91a", options).Extract()
 	th.AssertNoErr(t, err)

@@ -212,7 +212,7 @@ type UpdateOpts struct {
 
 	// Metadata is metadata for the backup.
 	// Requires microversion 3.43 or later.
-	Metadata map[string]string `json:"metadata,omitempty"`
+	Metadata *map[string]string `json:"metadata,omitempty"`
 }
 
 // ToBackupUpdateMap assembles a request body based on the contents of

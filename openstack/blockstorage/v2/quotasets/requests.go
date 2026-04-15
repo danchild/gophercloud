@@ -100,7 +100,7 @@ type UpdateOpts struct {
 
 	// Force will update the quotaset even if the quota has already been used
 	// and the reserved quota exceeds the new quota.
-	Force bool `json:"force,omitempty"`
+	Force *bool `json:"force,omitempty"`
 
 	// Extra is a collection of miscellaneous key/values used to set
 	// quota per volume_type

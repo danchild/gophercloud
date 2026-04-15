@@ -167,7 +167,7 @@ type CreateQosSpecsOptsBuilder interface {
 type UpdateOpts struct {
 	// The consumer of the QoS spec. Possible values are
 	// both, front-end, back-end.
-	Consumer QoSConsumer `json:"consumer,omitempty"`
+	Consumer *QoSConsumer `json:"consumer,omitempty"`
 	// Specs is a collection of miscellaneous key/values used to set
 	// specifications for the QoS
 	Specs map[string]string `json:"-"`

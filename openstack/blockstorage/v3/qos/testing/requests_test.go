@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/gophercloud/gophercloud/v2/internal/ptr"
 	"github.com/gophercloud/gophercloud/v2/openstack/blockstorage/v3/qos"
 	"github.com/gophercloud/gophercloud/v2/pagination"
 	th "github.com/gophercloud/gophercloud/v2/testhelper"
@@ -92,7 +93,7 @@ func TestUpdate(t *testing.T) {
 	MockUpdateResponse(t, fakeServer)
 
 	updateOpts := qos.UpdateOpts{
-		Consumer: qos.ConsumerBack,
+		Consumer: ptr.To(qos.ConsumerBack),
 		Specs: map[string]string{
 			"read_iops_sec":  "40000",
 			"write_iops_sec": "40000",
