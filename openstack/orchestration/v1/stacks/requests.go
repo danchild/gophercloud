@@ -329,9 +329,9 @@ type UpdateOpts struct {
 	// A structure that contains details for the environment of the stack.
 	EnvironmentOpts *Environment `json:"-"`
 	// User-defined parameters to pass to the template.
-	Parameters map[string]any `json:"parameters,omitempty"`
+	Parameters *map[string]any `json:"parameters,omitempty"`
 	// The timeout for stack creation in minutes.
-	Timeout int `json:"timeout_mins,omitempty"`
+	Timeout *int `json:"timeout_mins,omitempty"`
 	// A list of tags to associate with the Stack
 	Tags []string `json:"-"`
 }

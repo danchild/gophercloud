@@ -185,7 +185,7 @@ func TestUpdateStackNoTemplate(t *testing.T) {
 	parameters["flavor"] = "m1.tiny"
 
 	updateOpts := &stacks.UpdateOpts{
-		Parameters: parameters,
+		Parameters: &parameters,
 	}
 	expected := stacks.ErrTemplateRequired{}
 
@@ -202,7 +202,7 @@ func TestUpdatePatchStack(t *testing.T) {
 	parameters["flavor"] = "m1.tiny"
 
 	updateOpts := &stacks.UpdateOpts{
-		Parameters: parameters,
+		Parameters: &parameters,
 	}
 	err := stacks.UpdatePatch(context.TODO(), client.ServiceClient(fakeServer), "gophercloud-test-stack-2", "db6977b2-27aa-4775-9ae7-6213212d4ada", updateOpts).ExtractErr()
 	th.AssertNoErr(t, err)
