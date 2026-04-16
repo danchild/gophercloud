@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/gophercloud/gophercloud/v2/internal/ptr"
 	fake "github.com/gophercloud/gophercloud/v2/openstack/networking/v2/common"
 	"github.com/gophercloud/gophercloud/v2/openstack/networking/v2/extensions/layer3/portforwarding"
 	"github.com/gophercloud/gophercloud/v2/pagination"
@@ -309,15 +310,11 @@ func TestUpdate(t *testing.T) {
 `)
 	})
 
-	updatedProtocol := "udp"
-	updatedInternalPort := 37
-	updatedInternalPortID := "99889dc2-19a7-4edb-b9d0-d2ace8d1e144"
-	updatedExternalPort := 1960
 	options := portforwarding.UpdateOpts{
-		Protocol:       updatedProtocol,
-		InternalPort:   updatedInternalPort,
-		InternalPortID: updatedInternalPortID,
-		ExternalPort:   updatedExternalPort,
+		Protocol:       ptr.To("udp"),
+		InternalPort:   ptr.To(37),
+		InternalPortID: ptr.To("99889dc2-19a7-4edb-b9d0-d2ace8d1e144"),
+		ExternalPort:   ptr.To(1960),
 	}
 
 	actual, err := portforwarding.Update(context.TODO(), fake.ServiceClient(fakeServer), "2f245a7b-796b-4f26-9cf9-9e82d248fda7", "725ade3c-9760-4880-8080-8fc2dbab9acc", options).Extract()

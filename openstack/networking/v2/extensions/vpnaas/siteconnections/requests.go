@@ -215,15 +215,15 @@ type DPDUpdateOpts struct {
 type UpdateOpts struct {
 	Description    *string        `json:"description,omitempty"`
 	Name           *string        `json:"name,omitempty"`
-	LocalID        string         `json:"local_id,omitempty"`
-	PeerAddress    string         `json:"peer_address,omitempty"`
-	PeerID         string         `json:"peer_id,omitempty"`
-	PeerCIDRs      []string       `json:"peer_cidrs,omitempty"`
-	LocalEPGroupID string         `json:"local_ep_group_id,omitempty"`
-	PeerEPGroupID  string         `json:"peer_ep_group_id,omitempty"`
-	MTU            int            `json:"mtu,omitempty"`
-	Initiator      Initiator      `json:"initiator,omitempty"`
-	PSK            string         `json:"psk,omitempty"`
+	LocalID        *string        `json:"local_id,omitempty"`
+	PeerAddress    *string        `json:"peer_address,omitempty"`
+	PeerID         *string        `json:"peer_id,omitempty"`
+	PeerCIDRs      *[]string      `json:"peer_cidrs,omitempty"`
+	LocalEPGroupID *string        `json:"local_ep_group_id,omitempty"`
+	PeerEPGroupID  *string        `json:"peer_ep_group_id,omitempty"`
+	MTU            *int           `json:"mtu,omitempty"`
+	Initiator      *Initiator     `json:"initiator,omitempty"`
+	PSK            *string        `json:"psk,omitempty"`
 	DPD            *DPDUpdateOpts `json:"dpd,omitempty"`
 	AdminStateUp   *bool          `json:"admin_state_up,omitempty"`
 }

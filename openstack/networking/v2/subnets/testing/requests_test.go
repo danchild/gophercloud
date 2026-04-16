@@ -593,7 +593,7 @@ func TestUpdateAllocationPool(t *testing.T) {
 	name := "my_new_subnet"
 	opts := subnets.UpdateOpts{
 		Name: &name,
-		AllocationPools: []subnets.AllocationPool{
+		AllocationPools: &[]subnets.AllocationPool{
 			{
 				Start: "10.1.0.2",
 				End:   "10.1.0.254",

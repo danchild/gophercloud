@@ -7,6 +7,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/gophercloud/gophercloud/v2/internal/ptr"
 	fake "github.com/gophercloud/gophercloud/v2/openstack/networking/v2/common"
 	"github.com/gophercloud/gophercloud/v2/openstack/networking/v2/extensions/subnetpools"
 	"github.com/gophercloud/gophercloud/v2/pagination"
@@ -154,12 +155,12 @@ func TestUpdate(t *testing.T) {
 	nullString := ""
 	nullInt := 0
 	updateOpts := subnetpools.UpdateOpts{
-		Name: "new_subnetpool_name",
-		Prefixes: []string{
+		Name: ptr.To("new_subnetpool_name"),
+		Prefixes: &[]string{
 			"10.11.12.0/24",
 			"10.24.0.0/16",
 		},
-		MaxPrefixLen:   16,
+		MaxPrefixLen:   ptr.To(16),
 		AddressScopeID: &nullString,
 		DefaultQuota:   &nullInt,
 		Description:    &nullString,

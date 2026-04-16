@@ -145,7 +145,7 @@ type UpdateOptsBuilder interface {
 type UpdateOpts struct {
 	Description *string `json:"description,omitempty"`
 	PortID      *string `json:"port_id,omitempty"`
-	FixedIP     string  `json:"fixed_ip_address,omitempty"`
+	FixedIP     *string `json:"fixed_ip_address,omitempty"`
 
 	// RevisionNumber implements extension:standard-attr-revisions. If != "" it
 	// will set revision_number=%s. If the revision number does not match, the
@@ -161,8 +161,14 @@ func (opts UpdateOpts) ToFloatingIPUpdateMap() (map[string]any, error) {
 		return nil, err
 	}
 
-	if m := b["floatingip"].(map[string]any); m["port_id"] == "" {
-		m["port_id"] = nil
+	if f, ok := b["floatingip"].(map[string]any); ok {
+		// Convert empty strings to nil for proper null handling in JSON
+		if v, ok := f["port_id"].(string); ok && v == "" {
+			f["port_id"] = nil
+		}
+		if v, ok := f["fixed_ip_address"].(string); ok && v == "" {
+			f["fixed_ip_address"] = nil
+		}
 	}
 
 	return b, nil

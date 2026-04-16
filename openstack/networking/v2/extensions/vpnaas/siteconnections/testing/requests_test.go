@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/gophercloud/gophercloud/v2"
+	"github.com/gophercloud/gophercloud/v2/internal/ptr"
 	fake "github.com/gophercloud/gophercloud/v2/openstack/networking/v2/common"
 	"github.com/gophercloud/gophercloud/v2/openstack/networking/v2/extensions/vpnaas/siteconnections"
 	"github.com/gophercloud/gophercloud/v2/pagination"
@@ -370,13 +371,11 @@ func TestUpdate(t *testing.T) {
 }
 `)
 	})
-	updatedName := "updatedconnection"
-	updatedDescription := "updateddescription"
 	options := siteconnections.UpdateOpts{
-		Name:        &updatedName,
-		Description: &updatedDescription,
-		Initiator:   siteconnections.InitiatorResponseOnly,
-		PSK:         "updatedsecret",
+		Name:        ptr.To("updatedconnection"),
+		Description: ptr.To("updateddescription"),
+		Initiator:   ptr.To(siteconnections.InitiatorResponseOnly),
+		PSK:         ptr.To("updatedsecret"),
 	}
 
 	actual, err := siteconnections.Update(context.TODO(), fake.ServiceClient(fakeServer), "5c561d9d-eaea-45f6-ae3e-08d1a7080828", options).Extract()

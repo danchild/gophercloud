@@ -234,7 +234,7 @@ type UpdateOptsBuilder interface {
 // UpdateOpts represents options used to update a QoS policy.
 type UpdateOpts struct {
 	// Name is the human-readable name of the QoS policy.
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 
 	// Shared indicates whether this QoS policy is shared across all projects.
 	Shared *bool `json:"shared,omitempty"`

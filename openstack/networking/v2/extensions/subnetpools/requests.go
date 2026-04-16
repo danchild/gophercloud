@@ -162,38 +162,38 @@ type UpdateOptsBuilder interface {
 // UpdateOpts represents options used to update a network.
 type UpdateOpts struct {
 	// Name is the human-readable name of the subnetpool.
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 
 	// DefaultQuota is the per-project quota on the prefix space
 	// that can be allocated from the subnetpool for project subnets.
 	DefaultQuota *int `json:"default_quota,omitempty"`
 
 	// TenantID is the id of the Identity project.
-	TenantID string `json:"tenant_id,omitempty"`
+	TenantID *string `json:"tenant_id,omitempty"`
 
 	// ProjectID is the id of the Identity project.
-	ProjectID string `json:"project_id,omitempty"`
+	ProjectID *string `json:"project_id,omitempty"`
 
 	// Prefixes is the list of subnet prefixes to assign to the subnetpool.
 	// Neutron API merges adjacent prefixes and treats them as a single prefix.
 	// Each subnet prefix must be unique among all subnet prefixes in all subnetpools
 	// that are associated with the address scope.
-	Prefixes []string `json:"prefixes,omitempty"`
+	Prefixes *[]string `json:"prefixes,omitempty"`
 
 	// DefaultPrefixLen is yhe size of the prefix to allocate when the cidr
 	// or prefixlen attributes are omitted when you create the subnet.
 	// Defaults to the MinPrefixLen.
-	DefaultPrefixLen int `json:"default_prefixlen,omitempty"`
+	DefaultPrefixLen *int `json:"default_prefixlen,omitempty"`
 
 	// MinPrefixLen is the smallest prefix that can be allocated from a subnetpool.
 	// For IPv4 subnetpools, default is 8.
 	// For IPv6 subnetpools, default is 64.
-	MinPrefixLen int `json:"min_prefixlen,omitempty"`
+	MinPrefixLen *int `json:"min_prefixlen,omitempty"`
 
 	// MaxPrefixLen is the maximum prefix size that can be allocated from the subnetpool.
 	// For IPv4 subnetpools, default is 32.
 	// For IPv6 subnetpools, default is 128.
-	MaxPrefixLen int `json:"max_prefixlen,omitempty"`
+	MaxPrefixLen *int `json:"max_prefixlen,omitempty"`
 
 	// AddressScopeID is the Neutron address scope to assign to the subnetpool.
 	AddressScopeID *string `json:"address_scope_id,omitempty"`

@@ -7,6 +7,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/gophercloud/gophercloud/v2/internal/ptr"
 	fake "github.com/gophercloud/gophercloud/v2/openstack/networking/v2/common"
 	"github.com/gophercloud/gophercloud/v2/openstack/networking/v2/extensions/qos/policies"
 	"github.com/gophercloud/gophercloud/v2/openstack/networking/v2/networks"
@@ -428,12 +429,10 @@ func TestUpdatePolicy(t *testing.T) {
 		fmt.Fprint(w, UpdatePolicyResponse)
 	})
 
-	shared := true
-	description := ""
 	opts := policies.UpdateOpts{
-		Name:        "new-name",
-		Shared:      &shared,
-		Description: &description,
+		Name:        ptr.To("new-name"),
+		Shared:      ptr.To(true),
+		Description: ptr.To(""),
 	}
 	p, err := policies.Update(context.TODO(), fake.ServiceClient(fakeServer), "d6ae28ce-fcb5-4180-aa62-d260a27e09ae", opts).Extract()
 	th.AssertNoErr(t, err)

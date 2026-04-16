@@ -7,6 +7,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/gophercloud/gophercloud/v2/internal/ptr"
 	fake "github.com/gophercloud/gophercloud/v2/openstack/networking/v2/common"
 	"github.com/gophercloud/gophercloud/v2/openstack/networking/v2/extensions/layer3/routers"
 	"github.com/gophercloud/gophercloud/v2/pagination"
@@ -341,7 +342,7 @@ func TestUpdate(t *testing.T) {
 		QoSPolicyID: "01ba32e5-f15a-4687-8be9-ddec92a2f8a8",
 	}
 	r := []routers.Route{{DestinationCIDR: "40.0.1.0/24", NextHop: "10.1.0.10"}}
-	options := routers.UpdateOpts{Name: "new_name", GatewayInfo: &gwi, Routes: &r}
+	options := routers.UpdateOpts{Name: ptr.To("new_name"), GatewayInfo: &gwi, Routes: &r}
 
 	n, err := routers.Update(context.TODO(), fake.ServiceClient(fakeServer), "4e8e5957-649f-477b-9e5b-f1f75b21c03c", options).Extract()
 	th.AssertNoErr(t, err)
@@ -401,7 +402,7 @@ func TestUpdateWithoutRoutes(t *testing.T) {
 		`)
 	})
 
-	options := routers.UpdateOpts{Name: "new_name"}
+	options := routers.UpdateOpts{Name: ptr.To("new_name")}
 
 	n, err := routers.Update(context.TODO(), fake.ServiceClient(fakeServer), "4e8e5957-649f-477b-9e5b-f1f75b21c03c", options).Extract()
 	th.AssertNoErr(t, err)

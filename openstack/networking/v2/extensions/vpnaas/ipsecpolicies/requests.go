@@ -227,14 +227,14 @@ type LifetimeUpdateOpts struct {
 
 // UpdateOpts contains the values used when updating an IPSec policy
 type UpdateOpts struct {
-	Description         *string             `json:"description,omitempty"`
-	Name                *string             `json:"name,omitempty"`
-	AuthAlgorithm       AuthAlgorithm       `json:"auth_algorithm,omitempty"`
-	EncapsulationMode   EncapsulationMode   `json:"encapsulation_mode,omitempty"`
-	EncryptionAlgorithm EncryptionAlgorithm `json:"encryption_algorithm,omitempty"`
-	PFS                 PFS                 `json:"pfs,omitempty"`
-	TransformProtocol   TransformProtocol   `json:"transform_protocol,omitempty"`
-	Lifetime            *LifetimeUpdateOpts `json:"lifetime,omitempty"`
+	Description         *string              `json:"description,omitempty"`
+	Name                *string              `json:"name,omitempty"`
+	AuthAlgorithm       *AuthAlgorithm       `json:"auth_algorithm,omitempty"`
+	EncapsulationMode   *EncapsulationMode   `json:"encapsulation_mode,omitempty"`
+	EncryptionAlgorithm *EncryptionAlgorithm `json:"encryption_algorithm,omitempty"`
+	PFS                 *PFS                 `json:"pfs,omitempty"`
+	TransformProtocol   *TransformProtocol   `json:"transform_protocol,omitempty"`
+	Lifetime            *LifetimeUpdateOpts  `json:"lifetime,omitempty"`
 }
 
 // ToPolicyUpdateMap casts an UpdateOpts struct to a map.
