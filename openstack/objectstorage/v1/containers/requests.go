@@ -168,20 +168,20 @@ type UpdateOptsBuilder interface {
 // UpdateOpts is a structure that holds parameters for updating, creating, or
 // deleting a container's metadata.
 type UpdateOpts struct {
-	Metadata               map[string]string
-	RemoveMetadata         []string
+	Metadata               *map[string]string
+	RemoveMetadata         *[]string
 	ContainerRead          *string `h:"X-Container-Read"`
 	ContainerSyncTo        *string `h:"X-Container-Sync-To"`
 	ContainerSyncKey       *string `h:"X-Container-Sync-Key"`
 	ContainerWrite         *string `h:"X-Container-Write"`
 	ContentType            *string `h:"Content-Type"`
 	DetectContentType      *bool   `h:"X-Detect-Content-Type"`
-	RemoveVersionsLocation string  `h:"X-Remove-Versions-Location"`
-	VersionsLocation       string  `h:"X-Versions-Location"`
-	RemoveHistoryLocation  string  `h:"X-Remove-History-Location"`
-	HistoryLocation        string  `h:"X-History-Location"`
-	TempURLKey             string  `h:"X-Container-Meta-Temp-URL-Key"`
-	TempURLKey2            string  `h:"X-Container-Meta-Temp-URL-Key-2"`
+	RemoveVersionsLocation *string `h:"X-Remove-Versions-Location"`
+	VersionsLocation       *string `h:"X-Versions-Location"`
+	RemoveHistoryLocation  *string `h:"X-Remove-History-Location"`
+	HistoryLocation        *string `h:"X-History-Location"`
+	TempURLKey             *string `h:"X-Container-Meta-Temp-URL-Key"`
+	TempURLKey2            *string `h:"X-Container-Meta-Temp-URL-Key-2"`
 	VersionsEnabled        *bool   `h:"X-Versions-Enabled"`
 }
 
@@ -192,12 +192,16 @@ func (opts UpdateOpts) ToContainerUpdateMap() (map[string]string, error) {
 		return nil, err
 	}
 
-	for k, v := range opts.Metadata {
-		h["X-Container-Meta-"+k] = v
+	if opts.Metadata != nil {
+		for k, v := range *opts.Metadata {
+			h["X-Container-Meta-"+k] = v
+		}
 	}
 
-	for _, k := range opts.RemoveMetadata {
-		h["X-Remove-Container-Meta-"+k] = "remove"
+	if opts.RemoveMetadata != nil {
+		for _, k := range *opts.RemoveMetadata {
+			h["X-Remove-Container-Meta-"+k] = "remove"
+		}
 	}
 
 	return h, nil

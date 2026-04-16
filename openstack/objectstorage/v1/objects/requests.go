@@ -488,8 +488,8 @@ type UpdateOptsBuilder interface {
 // UpdateOpts is a structure that holds parameters for updating, creating, or
 // deleting an object's metadata.
 type UpdateOpts struct {
-	Metadata           map[string]string
-	RemoveMetadata     []string
+	Metadata           *map[string]string
+	RemoveMetadata     *[]string
 	ContentDisposition *string `h:"Content-Disposition"`
 	ContentEncoding    *string `h:"Content-Encoding"`
 	ContentType        *string `h:"Content-Type"`
@@ -505,13 +505,18 @@ func (opts UpdateOpts) ToObjectUpdateMap() (map[string]string, error) {
 		return nil, err
 	}
 
-	for k, v := range opts.Metadata {
-		h["X-Object-Meta-"+k] = v
+	if opts.Metadata != nil {
+		for k, v := range *opts.Metadata {
+			h["X-Object-Meta-"+k] = v
+		}
 	}
 
-	for _, k := range opts.RemoveMetadata {
-		h["X-Remove-Object-Meta-"+k] = "remove"
+	if opts.RemoveMetadata != nil {
+		for _, k := range *opts.RemoveMetadata {
+			h["X-Remove-Object-Meta-"+k] = "remove"
+		}
 	}
+
 	return h, nil
 }
 

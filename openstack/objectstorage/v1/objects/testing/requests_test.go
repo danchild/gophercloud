@@ -88,7 +88,7 @@ func TestContainerNames(t *testing.T) {
 				HandleUpdateObjectSuccessfully(t, fakeServer)
 
 				res := objects.Update(context.TODO(), client.ServiceClient(fakeServer), tc.containerName, "testObject", &objects.UpdateOpts{
-					Metadata: map[string]string{"Gophercloud-Test": "objects"},
+					Metadata: &map[string]string{"Gophercloud-Test": "objects"},
 				})
 				th.CheckErr(t, res.Err, &tc.expectedError)
 			})
@@ -404,8 +404,8 @@ func TestUpateObjectMetadata(t *testing.T) {
 	s := new(string)
 	i := new(int64)
 	options := &objects.UpdateOpts{
-		Metadata:           map[string]string{"Gophercloud-Test": "objects"},
-		RemoveMetadata:     []string{"Gophercloud-Test-Remove"},
+		Metadata:           &map[string]string{"Gophercloud-Test": "objects"},
+		RemoveMetadata:     &[]string{"Gophercloud-Test-Remove"},
 		ContentDisposition: s,
 		ContentEncoding:    s,
 		ContentType:        s,

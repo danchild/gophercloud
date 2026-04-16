@@ -53,7 +53,7 @@ func TestContainerNames(t *testing.T) {
 
 				contentType := "text/plain"
 				options := &containers.UpdateOpts{
-					Metadata:         map[string]string{"foo": "bar"},
+					Metadata:         &map[string]string{"foo": "bar"},
 					ContainerWrite:   new(string),
 					ContainerRead:    new(string),
 					ContainerSyncTo:  new(string),
@@ -209,7 +209,7 @@ func TestUpdateContainer(t *testing.T) {
 
 	contentType := "text/plain"
 	options := &containers.UpdateOpts{
-		Metadata:         map[string]string{"foo": "bar"},
+		Metadata:         &map[string]string{"foo": "bar"},
 		ContainerWrite:   new(string),
 		ContainerRead:    new(string),
 		ContainerSyncTo:  new(string),
@@ -259,7 +259,7 @@ func TestUpdateContainerVersioningOff(t *testing.T) {
 
 	contentType := "text/plain"
 	options := &containers.UpdateOpts{
-		Metadata:         map[string]string{"foo": "bar"},
+		Metadata:         &map[string]string{"foo": "bar"},
 		ContainerWrite:   new(string),
 		ContainerRead:    new(string),
 		ContainerSyncTo:  new(string),
@@ -279,7 +279,7 @@ func TestUpdateContainerVersioningOn(t *testing.T) {
 	iTrue := true
 	contentType := "text/plain"
 	options := &containers.UpdateOpts{
-		Metadata:         map[string]string{"foo": "bar"},
+		Metadata:         &map[string]string{"foo": "bar"},
 		ContainerWrite:   new(string),
 		ContainerRead:    new(string),
 		ContainerSyncTo:  new(string),

@@ -56,8 +56,8 @@ type UpdateOptsBuilder interface {
 // UpdateOpts is a structure that contains parameters for updating, creating, or
 // deleting an account's metadata.
 type UpdateOpts struct {
-	Metadata          map[string]string
-	RemoveMetadata    []string
+	Metadata          *map[string]string
+	RemoveMetadata    *[]string
 	ContentType       *string `h:"Content-Type"`
 	DetectContentType *bool   `h:"X-Detect-Content-Type"`
 	TempURLKey        string  `h:"X-Account-Meta-Temp-URL-Key"`
@@ -71,12 +71,16 @@ func (opts UpdateOpts) ToAccountUpdateMap() (map[string]string, error) {
 		return nil, err
 	}
 
-	for k, v := range opts.Metadata {
-		headers["X-Account-Meta-"+k] = v
+	if opts.Metadata != nil {
+		for k, v := range *opts.Metadata {
+			headers["X-Account-Meta-"+k] = v
+		}
 	}
 
-	for _, k := range opts.RemoveMetadata {
-		headers["X-Remove-Account-Meta-"+k] = "remove"
+	if opts.RemoveMetadata != nil {
+		for _, k := range *opts.RemoveMetadata {
+			headers["X-Remove-Account-Meta-"+k] = "remove"
+		}
 	}
 
 	return headers, err
