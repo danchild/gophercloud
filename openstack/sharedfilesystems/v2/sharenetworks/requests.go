@@ -144,17 +144,34 @@ type UpdateOpts struct {
 	// The share network description
 	Description *string `json:"description,omitempty"`
 	// The UUID of the Neutron network to set up for share servers
-	NeutronNetID string `json:"neutron_net_id,omitempty"`
+	NeutronNetID *string `json:"neutron_net_id,omitempty"`
 	// The UUID of the Neutron subnet to set up for share servers
-	NeutronSubnetID string `json:"neutron_subnet_id,omitempty"`
+	NeutronSubnetID *string `json:"neutron_subnet_id,omitempty"`
 	// The UUID of the nova network to set up for share servers
-	NovaNetID string `json:"nova_net_id,omitempty"`
+	NovaNetID *string `json:"nova_net_id,omitempty"`
 }
 
 // ToShareNetworkUpdateMap assembles a request body based on the contents of an
 // UpdateOpts.
 func (opts UpdateOpts) ToShareNetworkUpdateMap() (map[string]any, error) {
-	return gophercloud.BuildRequestBody(opts, "share_network")
+	b, err := gophercloud.BuildRequestBody(opts, "share_network")
+	if err != nil {
+		return nil, err
+	}
+
+	// Set empty strigs to null, openstack default
+	if sn, ok := b["share_network"].(map[string]any); ok {
+
+		if v, ok := sn["name"].(string); ok && v == "" {
+			sn["name"] = nil
+		}
+
+		if v, ok := sn["description"].(string); ok && v == "" {
+			sn["description"] = nil
+		}
+	}
+
+	return b, nil
 }
 
 // Update will update the ShareNetwork with provided information. To extract the updated

@@ -151,7 +151,7 @@ type UpdateOpts struct {
 	// The security service description
 	Description *string `json:"description,omitempty"`
 	// The security service type. A valid value is ldap, kerberos, or active_directory
-	Type string `json:"type,omitempty"`
+	Type *SecurityServiceType `json:"type,omitempty"`
 	// The DNS IP address that is used inside the tenant network
 	DNSIP *string `json:"dns_ip,omitempty"`
 	// The security service organizational unit (OU). Minimum supported microversion for OU is 2.44.

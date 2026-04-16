@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/gophercloud/gophercloud/v2/internal/ptr"
 	"github.com/gophercloud/gophercloud/v2/openstack/sharedfilesystems/v2/sharenetworks"
 	"github.com/gophercloud/gophercloud/v2/pagination"
 	th "github.com/gophercloud/gophercloud/v2/testhelper"
@@ -197,8 +198,8 @@ func TestUpdateNeutron(t *testing.T) {
 	options := sharenetworks.UpdateOpts{
 		Name:            &name,
 		Description:     &description,
-		NeutronNetID:    "new-neutron-id",
-		NeutronSubnetID: "new-neutron-subnet-id",
+		NeutronNetID:    ptr.To("new-neutron-id"),
+		NeutronSubnetID: ptr.To("new-neutron-subnet-id"),
 	}
 
 	v, err := sharenetworks.Update(context.TODO(), client.ServiceClient(fakeServer), "713df749-aac0-4a54-af52-10f6c991e80c", options).Extract()
@@ -234,7 +235,7 @@ func TestUpdateNova(t *testing.T) {
 	options := sharenetworks.UpdateOpts{
 		Name:        &name,
 		Description: &description,
-		NovaNetID:   "new-nova-id",
+		NovaNetID:   ptr.To("new-nova-id"),
 	}
 
 	v, err := sharenetworks.Update(context.TODO(), client.ServiceClient(fakeServer), "713df749-aac0-4a54-af52-10f6c991e80c", options).Extract()
