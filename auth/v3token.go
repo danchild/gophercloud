@@ -7,26 +7,26 @@ type V3TokenOpts struct {
 	Scope *Scope
 }
 
-func (opts V3TokenOpts) ToAuthBody() ([]string, map[string]map[string]any, error) {
+func (opts V3TokenOpts) ToAuthBody() ([]AuthType, AuthData, error) {
 	type tokenReq struct {
 		Token string `json:"token"`
 	}
 
-	authMethods := []string{"token"}
+	authTypes := []AuthType{V3Token}
 	req := tokenReq{
 		Token: opts.Token,
 	}
 
 	b, err := gophercloud.BuildRequestBody(req, "")
 	if err != nil {
-		return authMethods, nil, err
+		return authTypes, nil, err
 	}
 
-	result := map[string]map[string]any{
+	result := AuthData{
 		"token": b,
 	}
 
-	return authMethods, result, nil
+	return authTypes, result, nil
 }
 
 func (opts V3TokenOpts) ToAuthHeaders() (map[string]any, error) {

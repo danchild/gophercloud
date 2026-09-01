@@ -16,41 +16,38 @@ func AuthOptionsFromEnv() (AuthOptionsBuilder, error) {
 }
 
 func AuthOptionsFromEnvV2() (*AuthOptionsV2, error) {
-	// TODO: Consider making use of struct tags rather than defining this all manually
 	authURL := os.Getenv("OS_AUTH_URL")
-	authType := "" // v2 doesn't have the concept of auth types: this is purely for consistency
-
 	tenantName := os.Getenv("OS_TENANT_NAME")
 	tenantID := os.Getenv("OS_TENANT_ID")
-
 	username := os.Getenv("OS_USERNAME")
 	password := os.Getenv("OS_PASSWORD")
 	token := os.Getenv("OS_TOKEN")
 
+	var authType AuthType // v2 doesn't have auth type; purely for consistency
 	if password != "" {
-		authType = "v2password"
+		authType = V2Password
 	} else {
-		authType = "v2token"
+		authType = V2Token
 	}
 
-	var opts AuthV2Mechanism
+	var opts AuthV2
 
 	switch authType {
-	case "v2password":
+	case V2Password:
 		opts = V2PasswordOpts{
 			Username:   username,
 			Password:   password,
 			TenantID:   tenantID,
 			TenantName: tenantName,
 		}
-	case "v2token":
+	case V2Token:
 		opts = V2TokenOpts{
 			Token:      token,
 			TenantID:   tenantID,
 			TenantName: tenantName,
 		}
 	default:
-		return nil, gophercloud.ErrUnsupportedAuthType{AuthType: authType}
+		return nil, gophercloud.ErrUnsupportedAuthType{AuthType: string(authType)}
 	}
 
 	ao := &AuthOptionsV2{
@@ -62,10 +59,9 @@ func AuthOptionsFromEnvV2() (*AuthOptionsV2, error) {
 }
 
 func AuthOptionsFromEnvV3() (AuthOptionsBuilder, error) {
-	// TODO: Consider making use of struct tags rather than defining this all manually
 	authURL := os.Getenv("OS_AUTH_URL")
-	authType := os.Getenv("OS_AUTH_TYPE")
-	authMethods := strings.Split(os.Getenv("OS_AUTH_METHODS"), ",")
+	authType := AuthType(os.Getenv("OS_AUTH_TYPE"))
+	authMethods := []AuthType(strings.Split(os.Getenv("OS_AUTH_METHODS"), ","))
 
 	if authURL == "" {
 		return nil, gophercloud.ErrMissingEnvironmentVariable{
@@ -82,26 +78,28 @@ func AuthOptionsFromEnvV3() (AuthOptionsBuilder, error) {
 		token := os.Getenv("OS_TOKEN")
 
 		if password != "" {
-			authType = "v3password"
+			authType = V3Password
 		} else if passcode != "" {
-			authType = "v3totp"
+			authType = V3TOTP
 		} else if token != "" {
-			authType = "v3token"
+			authType = V3Token
 		} else if applicationCredentialID != "" || applicationCredentialName != "" {
-			authType = "v3applicationcredential"
+			authType = V3ApplicationCredential
 		}
 	}
 
 	scope := &Scope{
-		DomainID:    os.Getenv("OS_DOMAIN_ID"),
-		DomainName:  os.Getenv("OS_DOMAIN_NAME"),
-		ProjectID:   os.Getenv("OS_PROJECT_ID"),
-		ProjectName: os.Getenv("OS_PROJECT_NAME"),
+		DomainID:          os.Getenv("OS_DOMAIN_ID"),
+		DomainName:        os.Getenv("OS_DOMAIN_NAME"),
+		ProjectDomainID:   os.Getenv("OS_PROJECT_DOMAIN_ID"),
+		ProjectDomainName: os.Getenv("OS_PROJECT_DOMAIN_NAME"),
+		ProjectID:         os.Getenv("OS_PROJECT_ID"),
+		ProjectName:       os.Getenv("OS_PROJECT_NAME"),
 	}
 
-	var opts AuthV3Mechanism
+	var opts AuthV3
 
-	if authType == "v3multifactor" {
+	if authType == V3MultiFactor {
 		opts = V3MultifactorOpts{
 			Scope: scope,
 		}
@@ -114,7 +112,7 @@ func AuthOptionsFromEnvV3() (AuthOptionsBuilder, error) {
 	} else {
 		opts = authMechanismFromType(authType, scope)
 		if opts == nil {
-			return nil, gophercloud.ErrUnsupportedAuthType{AuthType: authType}
+			return nil, gophercloud.ErrUnsupportedAuthType{AuthType: string(authType)}
 		}
 	}
 
@@ -128,11 +126,11 @@ func AuthOptionsFromEnvV3() (AuthOptionsBuilder, error) {
 	return ao, nil
 }
 
-func authMechanismFromType(authType string, scope *Scope) AuthV3Mechanism {
-	var opts AuthV3Mechanism
+func authMechanismFromType(authType AuthType, scope *Scope) AuthV3 {
+	var opts AuthV3
 
 	switch authType {
-	case "v3password":
+	case V3Password:
 		opts = V3PasswordOpts{
 			Username:       os.Getenv("OS_USERNAME"),
 			UserID:         os.Getenv("OS_USERID"),
@@ -141,7 +139,7 @@ func authMechanismFromType(authType string, scope *Scope) AuthV3Mechanism {
 			UserDomainName: os.Getenv("OS_USER_DOMAIN_NAME"),
 			Scope:          scope,
 		}
-	case "v3totp":
+	case V3TOTP:
 		opts = V3TOTPOpts{
 			Username:       os.Getenv("OS_USERNAME"),
 			UserID:         os.Getenv("OS_USERID"),
@@ -150,7 +148,7 @@ func authMechanismFromType(authType string, scope *Scope) AuthV3Mechanism {
 			UserDomainName: os.Getenv("OS_USER_DOMAIN_NAME"),
 			Scope:          scope,
 		}
-	case "v3applicationcredential":
+	case V3ApplicationCredential:
 		opts = V3ApplicationCredentialOpts{
 			Username:                    os.Getenv("OS_USERNAME"),
 			UserID:                      os.Getenv("OS_USERID"),
@@ -159,14 +157,13 @@ func authMechanismFromType(authType string, scope *Scope) AuthV3Mechanism {
 			ApplicationCredentialSecret: os.Getenv("OS_APPLICATION_CREDENTIAL_SECRET"),
 			UserDomainID:                os.Getenv("OS_USER_DOMAIN_ID"),
 			UserDomainName:              os.Getenv("OS_USER_DOMAIN_NAME"),
-			Scope:                       scope,
 		}
-	case "v3token":
+	case V3Token:
 		opts = V3TokenOpts{
 			Token: os.Getenv("OS_TOKEN"),
 			Scope: scope,
 		}
-	case "v3multifactor": // this should never get here
+	case V3MultiFactor: // this should never get here
 	default:
 		return nil
 	}

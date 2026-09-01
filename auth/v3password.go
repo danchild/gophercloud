@@ -11,7 +11,7 @@ type V3PasswordOpts struct {
 	Scope          *Scope
 }
 
-func (opts V3PasswordOpts) ToAuthBody() ([]string, map[string]map[string]any, error) {
+func (opts V3PasswordOpts) ToAuthBody() ([]AuthType, AuthData, error) {
 	type domainReq struct {
 		ID   *string `json:"id,omitempty"`
 		Name *string `json:"name,omitempty"`
@@ -28,7 +28,7 @@ func (opts V3PasswordOpts) ToAuthBody() ([]string, map[string]map[string]any, er
 		User userReq `json:"user"`
 	}
 
-	authMethods := []string{"password"}
+	authTypes := []AuthType{V3Password}
 	req := passwordReq{
 		User: userReq{
 			Password: opts.Password,
@@ -37,22 +37,22 @@ func (opts V3PasswordOpts) ToAuthBody() ([]string, map[string]map[string]any, er
 
 	if opts.Password == "" {
 		// A password must be specified.
-		return authMethods, nil, gophercloud.ErrMissingPassword{}
+		return authTypes, nil, gophercloud.ErrMissingPassword{}
 	}
 
 	// Exactly one of Username and UserID must be specified
 	if opts.Username == "" && opts.UserID == "" {
-		return authMethods, nil, gophercloud.ErrUsernameOrUserID{}
+		return authTypes, nil, gophercloud.ErrUsernameOrUserID{}
 	} else if opts.Username != "" && opts.UserID != "" {
-		return authMethods, nil, gophercloud.ErrUsernameOrUserID{}
+		return authTypes, nil, gophercloud.ErrUsernameOrUserID{}
 	}
 
 	if opts.Username != "" {
 		// Exactly one of UserDomainID or UserDomainName must be specified
 		if opts.UserDomainID == "" && opts.UserDomainName == "" {
-			return authMethods, nil, gophercloud.ErrDomainIDOrDomainName{}
+			return authTypes, nil, gophercloud.ErrDomainIDOrDomainName{}
 		} else if opts.UserDomainID != "" && opts.UserDomainName != "" {
-			return authMethods, nil, gophercloud.ErrDomainIDOrDomainName{}
+			return authTypes, nil, gophercloud.ErrDomainIDOrDomainName{}
 		}
 
 		var domain *domainReq
@@ -68,23 +68,23 @@ func (opts V3PasswordOpts) ToAuthBody() ([]string, map[string]map[string]any, er
 	} else { // opts.UserID != ""
 		// None of UserDomainID or UserDomainName may be specified
 		if opts.UserDomainID != "" {
-			return authMethods, nil, gophercloud.ErrDomainIDWithUserID{}
+			return authTypes, nil, gophercloud.ErrDomainIDWithUserID{}
 		} else if opts.UserDomainName != "" {
-			return authMethods, nil, gophercloud.ErrDomainNameWithUserID{}
+			return authTypes, nil, gophercloud.ErrDomainNameWithUserID{}
 		}
 		req.User.ID = &opts.UserID
 	}
 
 	b, err := gophercloud.BuildRequestBody(req, "")
 	if err != nil {
-		return authMethods, nil, err
+		return authTypes, nil, err
 	}
 
-	result := map[string]map[string]any{
+	result := AuthData{
 		"password": b,
 	}
 
-	return authMethods, result, nil
+	return authTypes, result, nil
 }
 
 func (opts V3PasswordOpts) ToAuthHeaders() (map[string]any, error) {

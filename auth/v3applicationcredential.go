@@ -10,10 +10,9 @@ type V3ApplicationCredentialOpts struct {
 	ApplicationCredentialSecret string
 	UserDomainID                string
 	UserDomainName              string
-	Scope                       *Scope
 }
 
-func (opts V3ApplicationCredentialOpts) ToAuthBody() ([]string, map[string]map[string]any, error) {
+func (opts V3ApplicationCredentialOpts) ToAuthBody() ([]AuthType, AuthData, error) {
 	type domainReq struct {
 		ID   *string `json:"id,omitempty"`
 		Name *string `json:"name,omitempty"`
@@ -32,7 +31,7 @@ func (opts V3ApplicationCredentialOpts) ToAuthBody() ([]string, map[string]map[s
 		Secret string  `json:"secret"`
 	}
 
-	authMethods := []string{"applicationcredential"}
+	authTypes := []AuthType{V3ApplicationCredential}
 
 	req := applicationCredentialReq{
 		User: userReq{},
@@ -44,15 +43,14 @@ func (opts V3ApplicationCredentialOpts) ToAuthBody() ([]string, map[string]map[s
 	// 2. application_credential name + secret + user_id
 	// 3. application_credential name + secret + username + domain_id / domain_name
 	if opts.ApplicationCredentialSecret == "" {
-		return authMethods, nil, gophercloud.ErrAppCredMissingSecret{}
+		return authTypes, nil, gophercloud.ErrAppCredMissingSecret{}
 	}
 
 	// Exactly one of ApplicationCredentialID and ApplicationCredentialName must be specified
 	if opts.ApplicationCredentialID == "" && opts.ApplicationCredentialName == "" {
-		// TODO: Application credential-specific error
-		return authMethods, nil, gophercloud.ErrUsernameOrUserID{}
+		return authTypes, nil, gophercloud.ErrAppCredNameOrAppCredID{}
 	} else if opts.ApplicationCredentialID != "" && opts.ApplicationCredentialName != "" {
-		return authMethods, nil, gophercloud.ErrUsernameOrUserID{}
+		return authTypes, nil, gophercloud.ErrAppCredNameOrAppCredID{}
 	}
 
 	req.ID = opts.ApplicationCredentialID
@@ -61,17 +59,17 @@ func (opts V3ApplicationCredentialOpts) ToAuthBody() ([]string, map[string]map[s
 
 	// Exactly one of Username and UserID must be specified
 	if opts.Username == "" && opts.UserID == "" {
-		return authMethods, nil, gophercloud.ErrUsernameOrUserID{}
+		return authTypes, nil, gophercloud.ErrUsernameOrUserID{}
 	} else if opts.Username != "" && opts.UserID != "" {
-		return authMethods, nil, gophercloud.ErrUsernameOrUserID{}
+		return authTypes, nil, gophercloud.ErrUsernameOrUserID{}
 	}
 
 	if opts.Username != "" {
 		// Exactly one of DomainID or DomainName must be specified
 		if opts.UserDomainID == "" && opts.UserDomainName == "" {
-			return authMethods, nil, gophercloud.ErrDomainIDOrDomainName{}
+			return authTypes, nil, gophercloud.ErrDomainIDOrDomainName{}
 		} else if opts.UserDomainID != "" && opts.UserDomainName != "" {
-			return authMethods, nil, gophercloud.ErrDomainIDOrDomainName{}
+			return authTypes, nil, gophercloud.ErrDomainIDOrDomainName{}
 		}
 
 		var domain *domainReq
@@ -87,23 +85,23 @@ func (opts V3ApplicationCredentialOpts) ToAuthBody() ([]string, map[string]map[s
 	} else { // opts.UserID != ""
 		// None of DomainID or DomainName may be specified
 		if opts.UserDomainID != "" {
-			return authMethods, nil, gophercloud.ErrDomainIDWithUserID{}
+			return authTypes, nil, gophercloud.ErrDomainIDWithUserID{}
 		} else if opts.UserDomainName != "" {
-			return authMethods, nil, gophercloud.ErrDomainNameWithUserID{}
+			return authTypes, nil, gophercloud.ErrDomainNameWithUserID{}
 		}
 		req.User.ID = &opts.UserID
 	}
 
 	b, err := gophercloud.BuildRequestBody(req, "")
 	if err != nil {
-		return authMethods, nil, err
+		return authTypes, nil, err
 	}
 
-	result := map[string]map[string]any{
+	result := AuthData{
 		"applicationcredential": b,
 	}
 
-	return authMethods, result, nil
+	return authTypes, result, nil
 }
 
 func (opts V3ApplicationCredentialOpts) ToAuthHeaders() (map[string]any, error) {

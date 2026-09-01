@@ -8,39 +8,39 @@ import (
 )
 
 type V3MultifactorOpts struct {
-	AuthMethods []AuthV3Mechanism
+	AuthMethods []AuthV3
 	Scope       *Scope
 }
 
-func (opts V3MultifactorOpts) ToAuthBody() ([]string, map[string]map[string]any, error) {
-	result := map[string]map[string]any{}
-	authMethods := []string{}
+func (opts V3MultifactorOpts) ToAuthBody() ([]AuthType, AuthData, error) {
+	var result AuthData
+	var authTypes []AuthType
 	for _, authMethod := range opts.AuthMethods {
-		var authResult map[string]map[string]any
+		var authResult AuthData
 		var err error
 
 		switch authMethod.(type) {
 		case V3PasswordOpts:
-			authMethods = append(authMethods, "v3password")
+			authTypes = append(authTypes, V3Password)
 		case V3TOTPOpts:
-			authMethods = append(authMethods, "v3totp")
+			authTypes = append(authTypes, V3TOTP)
 		case V3ApplicationCredentialOpts:
-			authMethods = append(authMethods, "v3applicationcredential")
+			authTypes = append(authTypes, V3ApplicationCredential)
 		case V3TokenOpts:
-			authMethods = append(authMethods, "v3applicationcredential")
+			authTypes = append(authTypes, V3Token)
 		default:
-			return authMethods, nil, gophercloud.ErrUnsupportedAuthType{AuthType: fmt.Sprintf("%T", authMethod)}
+			return authTypes, nil, gophercloud.ErrUnsupportedAuthType{AuthType: fmt.Sprintf("%T", authMethod)}
 		}
 
 		_, authResult, err = authMethod.ToAuthBody()
 		if err != nil {
-			return authMethods, nil, err
+			return authTypes, nil, err
 		}
 
 		maps.Copy(result, authResult)
 	}
 
-	return authMethods, result, nil
+	return authTypes, result, nil
 }
 
 func (opts V3MultifactorOpts) ToAuthHeaders() (map[string]any, error) {

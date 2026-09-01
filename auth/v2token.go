@@ -9,7 +9,7 @@ type V2TokenOpts struct {
 	TenantName string
 }
 
-func (opts V2TokenOpts) ToAuthBody() ([]string, map[string]map[string]any, error) {
+func (opts V2TokenOpts) ToAuthBody() ([]AuthType, AuthData, error) {
 	type tokenCredentials struct {
 		ID string `json:"id" required:"true"`
 	}
@@ -35,18 +35,14 @@ func (opts V2TokenOpts) ToAuthBody() ([]string, map[string]map[string]any, error
 
 	b, err := gophercloud.BuildRequestBody(req, "")
 	if err != nil {
-		return []string{}, nil, err
+		return []AuthType{}, nil, err
 	}
 
-	result := map[string]map[string]any{
+	result := AuthData{
 		"token": b,
 	}
 
-	return []string{}, result, nil
-}
-
-func (opts V2TokenOpts) ToAuthHeaders() (map[string]any, error) {
-	return nil, nil
+	return []AuthType{}, result, nil
 }
 
 func (opts V2TokenOpts) CanReauth() bool {
