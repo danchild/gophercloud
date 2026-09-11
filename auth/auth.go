@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"maps"
-	"net/http"
 	"slices"
 	"time"
 
@@ -77,7 +76,7 @@ type AuthOptionsBuilderV3 interface {
 }
 
 type Authenticator interface {
-	Authenticate(ctx context.Context, httpClient *http.Client) (*AuthResult, error)
+	Authenticate(ctx context.Context, client *gophercloud.ProviderClient) (*AuthResult, error)
 	GetAuthURL() string
 }
 
@@ -94,7 +93,7 @@ func (ao AuthOptionsV2) GetAuthURL() string {
 	return gophercloud.NormalizeURL(base) + "v2.0/"
 }
 
-func (ao AuthOptionsV2) Authenticate(ctx context.Context, httpClient *http.Client) (*AuthResult, error) {
+func (ao AuthOptionsV2) Authenticate(ctx context.Context, provider *gophercloud.ProviderClient) (*AuthResult, error) {
 	if ao.Auth == nil {
 		return nil, gophercloud.ErrMissingInput{Argument: "Auth"}
 	}
@@ -112,12 +111,12 @@ func (ao AuthOptionsV2) Authenticate(ctx context.Context, httpClient *http.Clien
 		return nil, gophercloud.ErrMissingInput{Argument: "Auth"}
 	}
 
-	if httpClient == nil {
-		httpClient = &http.Client{}
+	if provider == nil {
+		provider = &gophercloud.ProviderClient{}
 	}
 
 	client := &gophercloud.ServiceClient{
-		ProviderClient: &gophercloud.ProviderClient{HTTPClient: *httpClient},
+		ProviderClient: provider,
 		Endpoint:       ao.GetAuthURL(),
 	}
 
@@ -152,7 +151,7 @@ func (ao AuthOptionsV3) GetAuthURL() string {
 	return gophercloud.NormalizeURL(base) + "v3/"
 }
 
-func (ao AuthOptionsV3) Authenticate(ctx context.Context, httpClient *http.Client) (*AuthResult, error) {
+func (ao AuthOptionsV3) Authenticate(ctx context.Context, provider *gophercloud.ProviderClient) (*AuthResult, error) {
 	if ao.Auth == nil {
 		return nil, gophercloud.ErrMissingInput{Argument: "Auth"}
 	}
@@ -187,12 +186,12 @@ func (ao AuthOptionsV3) Authenticate(ctx context.Context, httpClient *http.Clien
 		moreHeaders[k] = fmt.Sprint(v)
 	}
 
-	if httpClient == nil {
-		httpClient = &http.Client{}
+	if provider == nil {
+		provider = &gophercloud.ProviderClient{}
 	}
 
 	client := &gophercloud.ServiceClient{
-		ProviderClient: &gophercloud.ProviderClient{HTTPClient: *httpClient},
+		ProviderClient: provider,
 		Endpoint:       ao.GetAuthURL(),
 	}
 

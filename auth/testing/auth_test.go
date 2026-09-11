@@ -679,7 +679,7 @@ func TestAuthResultExtractTokenID(t *testing.T) {
 	th.CheckEquals(t, "abc123", id)
 }
 
-func TestAuthOptionsV3AuthenticateUsesProvidedHTTPClient(t *testing.T) {
+func TestAuthOptionsV3AuthenticateUsesProvidedClient(t *testing.T) {
 	fakeServer := th.SetupHTTP()
 	defer fakeServer.Teardown()
 
@@ -701,13 +701,14 @@ func TestAuthOptionsV3AuthenticateUsesProvidedHTTPClient(t *testing.T) {
 		AuthURL: fakeServer.Endpoint(),
 		Auth:    auth.V3PasswordOpts{Username: "me", Password: "secret", UserDomainName: "default"},
 	}
-	result, err := opts.Authenticate(context.TODO(), httpClient)
+	provider := &gophercloud.ProviderClient{HTTPClient: *httpClient}
+	result, err := opts.Authenticate(context.TODO(), provider)
 	th.AssertNoErr(t, err)
 	th.CheckEquals(t, ID, result.TokenID)
 	th.CheckEquals(t, true, usedCustomTransport)
 }
 
-func TestAuthOptionsV3AuthenticateNilHTTPClientDefaults(t *testing.T) {
+func TestAuthOptionsV3AuthenticateNilClientDefaults(t *testing.T) {
 	fakeServer := th.SetupHTTP()
 	defer fakeServer.Teardown()
 
