@@ -107,6 +107,7 @@ func CleanupEnv(t *testing.T) {
 		"OS_AUTH_URL",
 		"OS_AUTH_TYPE",
 		"OS_AUTH_METHODS",
+		"OS_SYSTEM_SCOPE",
 		"OS_USERNAME",
 		"OS_USERID",
 		"OS_PASSWORD",
