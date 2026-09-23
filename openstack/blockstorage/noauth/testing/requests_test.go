@@ -3,15 +3,15 @@ package testing
 import (
 	"testing"
 
-	"github.com/gophercloud/gophercloud/v2"
+	"github.com/gophercloud/gophercloud/v2/auth"
 	"github.com/gophercloud/gophercloud/v2/openstack/blockstorage/noauth"
 	th "github.com/gophercloud/gophercloud/v2/testhelper"
 )
 
 func TestNoAuth(t *testing.T) {
-	ao := gophercloud.AuthOptions{
-		Username:   "user",
-		TenantName: "test",
+	ao := auth.NoAuthOpts{
+		Username:    "user",
+		ProjectName: "test",
 	}
 	provider, err := noauth.NewClient(ao)
 	th.AssertNoErr(t, err)
@@ -22,7 +22,7 @@ func TestNoAuth(t *testing.T) {
 	th.AssertEquals(t, naTestResult.Endpoint, noauthClient.Endpoint)
 	th.AssertEquals(t, naTestResult.TokenID, noauthClient.TokenID)
 
-	ao2 := gophercloud.AuthOptions{}
+	ao2 := auth.NoAuthOpts{}
 	provider2, err := noauth.NewClient(ao2)
 	th.AssertNoErr(t, err)
 	noauthClient2, err := noauth.NewBlockStorageNoAuthV2(provider2, noauth.EndpointOpts{

@@ -199,9 +199,9 @@ func NewBlockStorageV3Client() (*gophercloud.ServiceClient, error) {
 // making calls to the OpenStack Block Storage v2 API. An error will be
 // returned if client creation was not possible.
 func NewBlockStorageV2NoAuthClient() (*gophercloud.ServiceClient, error) {
-	client, err := blockstorageNoAuth.NewClient(gophercloud.AuthOptions{
-		Username:   os.Getenv("OS_USERNAME"),
-		TenantName: os.Getenv("OS_TENANT_NAME"),
+	client, err := blockstorageNoAuth.NewClient(auth.NoAuthOpts{
+		Username:    os.Getenv("OS_USERNAME"),
+		ProjectName: os.Getenv("OS_PROJECT_NAME"),
 	})
 	if err != nil {
 		return nil, err
@@ -218,9 +218,9 @@ func NewBlockStorageV2NoAuthClient() (*gophercloud.ServiceClient, error) {
 // making calls to the OpenStack Block Storage v3 API. An error will be
 // returned if client creation was not possible.
 func NewBlockStorageV3NoAuthClient() (*gophercloud.ServiceClient, error) {
-	client, err := blockstorageNoAuth.NewClient(gophercloud.AuthOptions{
-		Username:   os.Getenv("OS_USERNAME"),
-		TenantName: os.Getenv("OS_TENANT_NAME"),
+	client, err := blockstorageNoAuth.NewClient(auth.NoAuthOpts{
+		Username:    os.Getenv("OS_USERNAME"),
+		ProjectName: os.Getenv("OS_PROJECT_NAME"),
 	})
 	if err != nil {
 		return nil, err

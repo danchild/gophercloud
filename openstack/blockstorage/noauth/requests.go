@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/gophercloud/gophercloud/v2"
+	"github.com/gophercloud/gophercloud/v2/auth"
 )
 
 // EndpointOpts specifies a "noauth" Cinder Endpoint.
@@ -16,16 +17,16 @@ type EndpointOpts struct {
 }
 
 // NewClient prepares an unauthenticated ProviderClient instance.
-func NewClient(options gophercloud.AuthOptions) (*gophercloud.ProviderClient, error) {
+func NewClient(options auth.NoAuthOpts) (*gophercloud.ProviderClient, error) {
 	if options.Username == "" {
 		options.Username = "admin"
 	}
-	if options.TenantName == "" {
-		options.TenantName = "admin"
+	if options.ProjectName == "" {
+		options.ProjectName = "admin"
 	}
 
 	client := &gophercloud.ProviderClient{
-		TokenID: fmt.Sprintf("%s:%s", options.Username, options.TenantName),
+		TokenID: fmt.Sprintf("%s:%s", options.Username, options.ProjectName),
 	}
 
 	return client, nil
