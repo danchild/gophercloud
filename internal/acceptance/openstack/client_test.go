@@ -14,7 +14,6 @@ import (
 	"github.com/gophercloud/gophercloud/v2/internal/acceptance/tools"
 	"github.com/gophercloud/gophercloud/v2/openstack"
 	"github.com/gophercloud/gophercloud/v2/openstack/identity/v3/credentials"
-	"github.com/gophercloud/gophercloud/v2/openstack/identity/v3/ec2tokens"
 	"github.com/gophercloud/gophercloud/v2/openstack/identity/v3/tokens"
 	th "github.com/gophercloud/gophercloud/v2/testhelper"
 )
@@ -82,12 +81,15 @@ func TestEC2AuthMethod(t *testing.T) {
 	newClient, err := clients.NewIdentityV3Client()
 	th.AssertNoErr(t, err)
 
-	ec2AuthOptions := &ec2tokens.AuthOptions{
-		Access: "181920",
-		Secret: "secretKey",
+	ec2AuthOptions := auth.AuthOptionsEC2{
+		AuthURL: newClient.Endpoint,
+		Auth: auth.EC2TokenOpts{
+			Access: "181920",
+			Secret: "secretKey",
+		},
 	}
 
-	err = openstack.AuthenticateV3(context.TODO(), newClient.ProviderClient, ec2AuthOptions, gophercloud.EndpointOpts{})
+	err = openstack.Authenticate(context.TODO(), newClient.ProviderClient, ec2AuthOptions)
 	th.AssertNoErr(t, err)
 
 	tools.PrintResource(t, newClient.TokenID)
