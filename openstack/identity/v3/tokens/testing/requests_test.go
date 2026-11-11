@@ -693,26 +693,6 @@ func TestCreateFailureBothDomain(t *testing.T) {
 	authTokenPostErr(t, opts, gophercloud.ErrDomainIDOrDomainName{})
 }
 
-func TestCreateFailureUserIDDomainID(t *testing.T) {
-	opts := auth.V3PasswordOpts{
-		UserID:       "100",
-		Password:     "stuff",
-		UserDomainID: "oops",
-	}
-
-	authTokenPostErr(t, opts, gophercloud.ErrDomainIDWithUserID{})
-}
-
-func TestCreateFailureUserIDDomainName(t *testing.T) {
-	opts := auth.V3PasswordOpts{
-		UserID:         "100",
-		Password:       "sssh",
-		UserDomainName: "oops",
-	}
-
-	authTokenPostErr(t, opts, gophercloud.ErrDomainNameWithUserID{})
-}
-
 func TestCreateFailureScopeProjectNameAlone(t *testing.T) {
 	opts := auth.V3PasswordOpts{
 		UserID:   "myself",

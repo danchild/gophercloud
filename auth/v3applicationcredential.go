@@ -90,12 +90,6 @@ func (opts V3ApplicationCredentialOpts) ToAuthBody() (map[string]map[string]any,
 			Domain: domain,
 		}
 	} else if opts.UserID != "" {
-		// None of DomainID or DomainName may be specified
-		if opts.UserDomainID != "" {
-			return nil, gophercloud.ErrDomainIDWithUserID{}
-		} else if opts.UserDomainName != "" {
-			return nil, gophercloud.ErrDomainNameWithUserID{}
-		}
 		req.User = &userReq{ID: &opts.UserID}
 	}
 

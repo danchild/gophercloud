@@ -121,8 +121,6 @@ func TestV3PasswordOptsValidation(t *testing.T) {
 		{name: "both username and user ID", opts: auth.V3PasswordOpts{Username: "testuser", UserID: "user-id", Password: "testpass"}, kind: gophercloud.ErrUsernameOrUserID{}},
 		{name: "username without domain", opts: auth.V3PasswordOpts{Username: "testuser", Password: "testpass"}, kind: gophercloud.ErrDomainIDOrDomainName{}},
 		{name: "username with both domains", opts: auth.V3PasswordOpts{Username: "testuser", Password: "testpass", UserDomainID: "domain-id", UserDomainName: "domain-name"}, kind: gophercloud.ErrDomainIDOrDomainName{}},
-		{name: "user ID with domain ID", opts: auth.V3PasswordOpts{UserID: "user-id", Password: "testpass", UserDomainID: "domain-id"}, kind: gophercloud.ErrDomainIDWithUserID{}},
-		{name: "user ID with domain name", opts: auth.V3PasswordOpts{UserID: "user-id", Password: "testpass", UserDomainName: "domain-name"}, kind: gophercloud.ErrDomainNameWithUserID{}},
 	}
 
 	for _, test := range tests {
@@ -183,8 +181,6 @@ func TestV3TOTPOptsValidation(t *testing.T) {
 		{name: "both username and user ID", opts: auth.V3TOTPOpts{Username: "testuser", UserID: "user-id", Passcode: "123456"}, kind: gophercloud.ErrUsernameOrUserID{}},
 		{name: "username without domain", opts: auth.V3TOTPOpts{Username: "testuser", Passcode: "123456"}, kind: gophercloud.ErrDomainIDOrDomainName{}},
 		{name: "username with both domains", opts: auth.V3TOTPOpts{Username: "testuser", Passcode: "123456", UserDomainID: "domain-id", UserDomainName: "domain-name"}, kind: gophercloud.ErrDomainIDOrDomainName{}},
-		{name: "user ID with domain ID", opts: auth.V3TOTPOpts{UserID: "user-id", Passcode: "123456", UserDomainID: "domain-id"}, kind: gophercloud.ErrDomainIDWithUserID{}},
-		{name: "user ID with domain name", opts: auth.V3TOTPOpts{UserID: "user-id", Passcode: "123456", UserDomainName: "domain-name"}, kind: gophercloud.ErrDomainNameWithUserID{}},
 	}
 
 	for _, test := range tests {
@@ -249,8 +245,6 @@ func TestV3ApplicationCredentialOptsValidation(t *testing.T) {
 		{name: "both username and user ID", opts: auth.V3ApplicationCredentialOpts{ApplicationCredentialName: "credential-name", ApplicationCredentialSecret: "secret", Username: "testuser", UserID: "user-id"}, kind: gophercloud.ErrUsernameOrUserID{}},
 		{name: "username without domain", opts: auth.V3ApplicationCredentialOpts{ApplicationCredentialName: "credential-name", ApplicationCredentialSecret: "secret", Username: "testuser"}, kind: gophercloud.ErrDomainIDOrDomainName{}},
 		{name: "username with both domains", opts: auth.V3ApplicationCredentialOpts{ApplicationCredentialName: "credential-name", ApplicationCredentialSecret: "secret", Username: "testuser", UserDomainID: "domain-id", UserDomainName: "domain-name"}, kind: gophercloud.ErrDomainIDOrDomainName{}},
-		{name: "user ID with domain ID", opts: auth.V3ApplicationCredentialOpts{ApplicationCredentialName: "credential-name", ApplicationCredentialSecret: "secret", UserID: "user-id", UserDomainID: "domain-id"}, kind: gophercloud.ErrDomainIDWithUserID{}},
-		{name: "user ID with domain name", opts: auth.V3ApplicationCredentialOpts{ApplicationCredentialName: "credential-name", ApplicationCredentialSecret: "secret", UserID: "user-id", UserDomainName: "domain-name"}, kind: gophercloud.ErrDomainNameWithUserID{}},
 	}
 
 	for _, test := range tests {

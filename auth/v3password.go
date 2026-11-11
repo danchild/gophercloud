@@ -71,12 +71,6 @@ func (opts V3PasswordOpts) ToAuthBody() (map[string]map[string]any, error) {
 		req.User.Name = &opts.Username
 		req.User.Domain = domain
 	} else { // opts.UserID != ""
-		// None of UserDomainID or UserDomainName may be specified
-		if opts.UserDomainID != "" {
-			return nil, gophercloud.ErrDomainIDWithUserID{}
-		} else if opts.UserDomainName != "" {
-			return nil, gophercloud.ErrDomainNameWithUserID{}
-		}
 		req.User.ID = &opts.UserID
 	}
 

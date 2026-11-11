@@ -239,10 +239,6 @@ func unacceptedAttributeErr(attribute string) string {
 	return fmt.Sprintf("The base Identity V3 API does not accept authentication by %s", attribute)
 }
 
-func redundantWithUserID(attribute string) string {
-	return fmt.Sprintf("%s may not be provided when authenticating with a UserID", attribute)
-}
-
 // ErrAPIKeyProvided indicates that an APIKey was provided but can't be used.
 type ErrAPIKeyProvided struct{ BaseError }
 
@@ -315,20 +311,6 @@ type ErrProjectScopeAndDomainScope struct {
 func (e ErrProjectScopeAndDomainScope) Error() string {
 	e.DefaultErrString = fmt.Sprintf("%s and %s cannot be used to scope at the same time", e.ProjectOption, e.DomainOption)
 	return e.choseErrString()
-}
-
-// ErrDomainIDWithUserID indicates that a DomainID was provided, but unnecessary because a UserID is being used.
-type ErrDomainIDWithUserID struct{ BaseError }
-
-func (e ErrDomainIDWithUserID) Error() string {
-	return redundantWithUserID("DomainID")
-}
-
-// ErrDomainNameWithUserID indicates that a DomainName was provided, but unnecessary because a UserID is being used.
-type ErrDomainNameWithUserID struct{ BaseError }
-
-func (e ErrDomainNameWithUserID) Error() string {
-	return redundantWithUserID("DomainName")
 }
 
 // ErrDomainIDOrDomainName indicates that a username was provided, but no domain to scope it.
