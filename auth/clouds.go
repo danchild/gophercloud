@@ -238,6 +238,7 @@ func AuthOptionsFromCloud(c CloudSource, opts ...CloudOption) (Authenticator, er
 			client.HTTPClient.Transport = transport
 		}
 
+		// TODO(danchild): drop utils.ChooseVersion and replace with utils.GetServiceVersions
 		version, _, err := utils.ChooseVersion(context.Background(), client, []*utils.Version{
 			{ID: "v2.0", Priority: 20, Suffix: "/v2.0/"},
 			{ID: "v3", Priority: 30, Suffix: "/v3/"},
